@@ -48,7 +48,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4 }}
-              className="font-['Cormorant_Garamond'] text-5xl md:text-6xl lg:text-7xl font-light leading-[1.05] text-cream mb-6"
+              className="font-['Poppins'] text-5xl md:text-6xl lg:text-7xl font-light leading-[1.05] text-cream mb-6"
             >
               Kaffee, der
               <br />
@@ -62,7 +62,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
-              className="font-['Outfit'] text-mokka text-base md:text-lg leading-relaxed max-w-md mb-10"
+              className="font-['Figtree'] text-mokka text-base md:text-lg leading-relaxed max-w-md mb-10"
             >
               Wir bringen Specialty Coffee direkt in Ihr Büro – mit persönlicher
               Beratung, Verkostung auf Ihren Maschinen und transparenter
@@ -109,10 +109,10 @@ export default function HeroSection() {
                 { value: "Vor Ort", label: "Verkostung" },
               ].map((item) => (
                 <div key={item.label} className="text-center">
-                  <div className="font-['Cormorant_Garamond'] text-2xl font-semibold text-[#C9A84C]">
+                  <div className="font-['Poppins'] text-2xl font-semibold text-[#C9A84C]">
                     {item.value}
                   </div>
-                  <div className="font-['Outfit'] text-xs text-mokka uppercase tracking-wider mt-1">
+                  <div className="font-['Figtree'] text-xs text-mokka uppercase tracking-wider mt-1">
                     {item.label}
                   </div>
                 </div>
@@ -152,7 +152,7 @@ export default function HeroSection() {
         transition={{ delay: 1.5 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-mokka hover:text-gold transition-colors"
       >
-        <span className="font-['Outfit'] text-xs uppercase tracking-widest">Entdecken</span>
+        <span className="font-['Figtree'] text-xs uppercase tracking-widest">Entdecken</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}

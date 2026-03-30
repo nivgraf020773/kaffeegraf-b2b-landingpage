@@ -51,7 +51,7 @@ export default function BeratungSection() {
                 Maschinenberatung
               </span>
             </div>
-            <h2 className="font-['Cormorant_Garamond'] text-4xl md:text-5xl font-light text-cream leading-tight">
+            <h2 className="font-['Poppins'] text-4xl md:text-5xl font-light text-cream leading-tight">
               Die richtige Maschine
               <br />
               <span className="font-semibold italic text-[#C9A84C]">für jeden Bedarf.</span>
@@ -65,7 +65,7 @@ export default function BeratungSection() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="flex flex-col justify-end"
           >
-            <p className="font-['Outfit'] text-mokka text-sm leading-relaxed">
+            <p className="font-['Figtree'] text-mokka text-sm leading-relaxed">
               Ob Vollautomat für das Büro oder Siebträger für das Café – wir
               beraten Sie herstellerunabhängig und individuell. Unser Ziel ist
               nicht der schnelle Verkauf, sondern die langfristig richtige
@@ -91,10 +91,10 @@ export default function BeratungSection() {
                   className="text-[#C9A84C] opacity-70 group-hover:opacity-100 transition-opacity"
                 />
               </div>
-              <h3 className="font-['Cormorant_Garamond'] text-2xl font-semibold text-cream mb-3">
+              <h3 className="font-['Poppins'] text-2xl font-semibold text-cream mb-3">
                 {target.title}
               </h3>
-              <p className="font-['Outfit'] text-sm text-mokka leading-relaxed mb-6">
+              <p className="font-['Figtree'] text-sm text-mokka leading-relaxed mb-6">
                 {target.description}
               </p>
               <div className="gold-line mb-4" />
@@ -129,7 +129,7 @@ export default function BeratungSection() {
           <div className="absolute inset-0 flex items-center">
             <div className="container">
               <div className="max-w-lg">
-                <h3 className="font-['Cormorant_Garamond'] text-3xl md:text-4xl font-light text-cream mb-4">
+                <h3 className="font-['Poppins'] text-3xl md:text-4xl font-light text-cream mb-4">
                   Bereit für besseren
                   <br />
                   <span className="font-semibold italic text-[#C9A84C]">Bürokaffee?</span>

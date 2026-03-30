@@ -48,12 +48,12 @@ export default function KontaktSection() {
                 Kontakt
               </span>
             </div>
-            <h2 className="font-['Cormorant_Garamond'] text-4xl md:text-5xl font-light text-cream leading-tight mb-6">
+            <h2 className="font-['Poppins'] text-4xl md:text-5xl font-light text-cream leading-tight mb-6">
               Starten wir mit
               <br />
               <span className="font-semibold italic text-[#C9A84C]">einer Verkostung.</span>
             </h2>
-            <p className="font-['Outfit'] text-mokka text-sm leading-relaxed mb-10">
+            <p className="font-['Figtree'] text-mokka text-sm leading-relaxed mb-10">
               Füllen Sie das Formular aus und wir melden uns innerhalb von 24
               Stunden bei Ihnen. Die erste Verkostung ist selbstverständlich
               kostenlos und unverbindlich.
@@ -92,7 +92,7 @@ export default function KontaktSection() {
                     <div className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka">
                       {item.label}
                     </div>
-                    <div className="font-['Outfit'] text-sm text-cream group-hover:text-[#C9A84C] transition-colors duration-300">
+                    <div className="font-['Figtree'] text-sm text-cream group-hover:text-[#C9A84C] transition-colors duration-300">
                       {item.value}
                     </div>
                   </div>
@@ -107,7 +107,7 @@ export default function KontaktSection() {
               transition={{ duration: 0.7, delay: 0.6 }}
               className="mt-12 p-6 border-l-2 border-[#C9A84C]/40 bg-[#1A1512]"
             >
-              <p className="font-['Cormorant_Garamond'] text-lg italic text-cream/80">
+              <p className="font-['Poppins'] text-lg italic text-cream/80">
                 "Wir glauben, dass jedes Unternehmen den Kaffee verdient, der
                 wirklich zu ihm passt. Deshalb kommen wir zu Ihnen – nicht
                 umgekehrt."
@@ -128,10 +128,10 @@ export default function KontaktSection() {
             {submitted ? (
               <div className="h-full flex flex-col items-center justify-center text-center p-12 bg-[#1A1512] border border-[#C9A84C]/20">
                 <CheckCircle size={40} className="text-[#C9A84C] mb-6" />
-                <h3 className="font-['Cormorant_Garamond'] text-3xl font-semibold text-cream mb-4">
+                <h3 className="font-['Poppins'] text-3xl font-semibold text-cream mb-4">
                   Vielen Dank!
                 </h3>
-                <p className="font-['Outfit'] text-sm text-mokka leading-relaxed">
+                <p className="font-['Figtree'] text-sm text-mokka leading-relaxed">
                   Ihre Anfrage ist bei uns eingegangen. Wir melden uns innerhalb
                   von 24 Stunden bei Ihnen, um einen Termin für die kostenlose
                   Verkostung zu vereinbaren.
@@ -154,7 +154,7 @@ export default function KontaktSection() {
                       value={form.name}
                       onChange={handleChange}
                       placeholder="Max Mustermann"
-                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Outfit'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
                     />
                   </div>
                   <div>
@@ -168,7 +168,7 @@ export default function KontaktSection() {
                       value={form.company}
                       onChange={handleChange}
                       placeholder="Muster GmbH"
-                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Outfit'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
                     />
                   </div>
                 </div>
@@ -185,7 +185,7 @@ export default function KontaktSection() {
                       value={form.email}
                       onChange={handleChange}
                       placeholder="max@muster.at"
-                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Outfit'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
                     />
                   </div>
                   <div>
@@ -198,7 +198,7 @@ export default function KontaktSection() {
                       value={form.phone}
                       onChange={handleChange}
                       placeholder="+43 ..."
-                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Outfit'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
                     />
                   </div>
                 </div>
@@ -212,7 +212,7 @@ export default function KontaktSection() {
                     required
                     value={form.type}
                     onChange={handleChange}
-                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Outfit'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors"
+                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors"
                   >
                     <option value="" disabled className="text-mokka">
                       Bitte wählen ...
@@ -234,7 +234,7 @@ export default function KontaktSection() {
                     onChange={handleChange}
                     rows={4}
                     placeholder="Erzählen Sie uns kurz von Ihrem Bedarf – Teamgröße, vorhandene Maschinen, Präferenzen ..."
-                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Outfit'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors resize-none placeholder:text-mokka/30"
+                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors resize-none placeholder:text-mokka/30"
                   />
                 </div>
 
@@ -242,7 +242,7 @@ export default function KontaktSection() {
                   Kostenlose Verkostung anfragen
                 </button>
 
-                <p className="font-['Outfit'] text-[10px] text-mokka/50 text-center">
+                <p className="font-['Figtree'] text-[10px] text-mokka/50 text-center">
                   Unverbindlich · Kostenlos · Antwort innerhalb von 24 Stunden
                 </p>
               </form>

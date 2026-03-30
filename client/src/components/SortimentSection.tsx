@@ -107,10 +107,10 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
           {product.tagline}
         </span>
       </div>
-      <h3 className="font-['Cormorant_Garamond'] text-3xl font-semibold text-cream mb-4 tracking-wide">
+      <h3 className="font-['Poppins'] text-3xl font-semibold text-cream mb-4 tracking-wide">
         {product.name}
       </h3>
-      <p className="font-['Outfit'] text-sm text-mokka leading-relaxed mb-6 flex-1">
+      <p className="font-['Figtree'] text-sm text-mokka leading-relaxed mb-6 flex-1">
         {product.description}
       </p>
 
@@ -121,7 +121,7 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
             <div className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka mb-1">
               {spec.label}
             </div>
-            <div className="font-['Outfit'] text-xs text-cream font-medium">
+            <div className="font-['Figtree'] text-xs text-cream font-medium">
               {spec.value}
             </div>
           </div>
@@ -163,12 +163,12 @@ export default function SortimentSection() {
               Das Sortiment
             </span>
           </div>
-          <h2 className="font-['Cormorant_Garamond'] text-4xl md:text-5xl lg:text-6xl font-light text-cream max-w-2xl leading-tight">
+          <h2 className="font-['Poppins'] text-4xl md:text-5xl lg:text-6xl font-light text-cream max-w-2xl leading-tight">
             Drei Sorten.
             <br />
             <span className="font-semibold italic text-[#C9A84C]">Jede ein Statement.</span>
           </h2>
-          <p className="font-['Outfit'] text-mokka text-base mt-6 max-w-xl leading-relaxed">
+          <p className="font-['Figtree'] text-mokka text-base mt-6 max-w-xl leading-relaxed">
             Unser B2B-Sortiment ist bewusst kuratiert: Qualität statt Masse.
             Alle Sorten sind als 100% Specialty Coffee zertifiziert und werden
             frisch geröstet geliefert.
@@ -194,7 +194,7 @@ export default function SortimentSection() {
             <div className="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-[#C9A84C] mb-2">
               White-Label Option
             </div>
-            <p className="font-['Outfit'] text-sm text-mokka">
+            <p className="font-['Figtree'] text-sm text-mokka">
               Alle Sorten sind auf Wunsch auch unter Ihrem eigenen Firmenlabel
               erhältlich – ideal für Gastronomie und Cafés mit eigenem Branding.
             </p>

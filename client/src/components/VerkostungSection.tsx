@@ -69,10 +69,10 @@ export default function VerkostungSection() {
               <div className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-[#C9A84C] mb-2">
                 Unser Versprechen
               </div>
-              <div className="font-['Cormorant_Garamond'] text-xl font-semibold text-cream">
+              <div className="font-['Poppins'] text-xl font-semibold text-cream">
                 Keine Katze im Sack.
               </div>
-              <div className="font-['Outfit'] text-xs text-mokka mt-1">
+              <div className="font-['Figtree'] text-xs text-mokka mt-1">
                 Erst verkosten, dann entscheiden.
               </div>
             </motion.div>
@@ -92,12 +92,12 @@ export default function VerkostungSection() {
                   Der Prozess
                 </span>
               </div>
-              <h2 className="font-['Cormorant_Garamond'] text-4xl md:text-5xl font-light text-cream leading-tight">
+              <h2 className="font-['Poppins'] text-4xl md:text-5xl font-light text-cream leading-tight">
                 Verkostung
                 <br />
                 <span className="font-semibold italic text-[#C9A84C]">direkt bei Ihnen.</span>
               </h2>
-              <p className="font-['Outfit'] text-mokka text-sm mt-4 leading-relaxed">
+              <p className="font-['Figtree'] text-mokka text-sm mt-4 leading-relaxed">
                 Wir glauben, dass Kaffee erlebt werden muss – nicht beschrieben.
                 Deshalb kommen wir zu Ihnen und bereiten die Sorten auf Ihren
                 eigenen Maschinen zu.
@@ -115,15 +115,15 @@ export default function VerkostungSection() {
                   className="flex gap-6 py-6 border-b border-white/5 last:border-0 group"
                 >
                   <div className="flex-shrink-0">
-                    <span className="font-['Cormorant_Garamond'] text-4xl font-light text-[#C9A84C]/30 group-hover:text-[#C9A84C]/60 transition-colors duration-300">
+                    <span className="font-['Poppins'] text-4xl font-light text-[#C9A84C]/30 group-hover:text-[#C9A84C]/60 transition-colors duration-300">
                       {step.number}
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-['Cormorant_Garamond'] text-xl font-semibold text-cream mb-2">
+                    <h4 className="font-['Poppins'] text-xl font-semibold text-cream mb-2">
                       {step.title}
                     </h4>
-                    <p className="font-['Outfit'] text-sm text-mokka leading-relaxed">
+                    <p className="font-['Figtree'] text-sm text-mokka leading-relaxed">
                       {step.description}
                     </p>
                   </div>

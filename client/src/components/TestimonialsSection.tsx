@@ -53,7 +53,7 @@ export default function TestimonialsSection() {
             </span>
             <div className="h-px w-8 bg-[#C9A84C] opacity-60" />
           </div>
-          <h2 className="font-['Cormorant_Garamond'] text-4xl md:text-5xl font-light text-cream">
+          <h2 className="font-['Poppins'] text-4xl md:text-5xl font-light text-cream">
             Was unsere Kunden
             <br />
             <span className="font-semibold italic text-[#C9A84C]">sagen.</span>
@@ -81,7 +81,7 @@ export default function TestimonialsSection() {
               <Quote size={20} className="text-[#C9A84C]/40 mb-6" />
 
               {/* Quote text */}
-              <p className="font-['Cormorant_Garamond'] text-lg font-light text-cream/70 leading-relaxed mb-8 italic">
+              <p className="font-['Poppins'] text-lg font-light text-cream/70 leading-relaxed mb-8 italic">
                 "{testimonial.quote}"
               </p>
 
@@ -90,7 +90,7 @@ export default function TestimonialsSection() {
 
               {/* Author */}
               <div>
-                <div className="font-['Outfit'] text-sm font-medium text-cream/60">
+                <div className="font-['Figtree'] text-sm font-medium text-cream/60">
                   {testimonial.author}
                 </div>
                 <div className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka/60 mt-1">
@@ -118,7 +118,7 @@ export default function TestimonialsSection() {
           transition={{ duration: 0.7, delay: 0.4 }}
           className="mt-12 text-center"
         >
-          <p className="font-['Outfit'] text-sm text-mokka mb-6">
+          <p className="font-['Figtree'] text-sm text-mokka mb-6">
             Werden Sie einer unserer ersten Referenzkunden und profitieren Sie
             von exklusiven Konditionen beim Einstieg.
           </p>

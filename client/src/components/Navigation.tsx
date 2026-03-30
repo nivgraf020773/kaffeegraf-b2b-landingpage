@@ -37,36 +37,28 @@ export default function Navigation() {
       }`}
     >
       <div className="container">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16 md:h-20 gap-4">
           {/* Logo */}
           <a
             href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-            className="flex items-center gap-3 group"
+            className="flex-shrink-0"
           >
-            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden">
-              <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-product_0d6dfc56.png"
-                alt="kaffeegraf Logo"
-                className="w-full h-full object-cover scale-[2.2] object-center"
-              />
-            </div>
-            <span
-              className="font-['Cormorant_Garamond'] text-xl font-semibold tracking-widest uppercase text-cream"
-              style={{ letterSpacing: "0.2em" }}
-            >
-              kaffeegraf
-            </span>
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-logo_55fb2e87.webp"
+              alt="kaffeegraf Logo"
+              className="h-12 w-auto"
+            />
           </a>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 flex-1 justify-center">
             {navLinks.map((link) => (
               <button
                 key={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="text-mokka hover:text-gold transition-colors duration-300 font-['Outfit'] text-xs uppercase tracking-widest"
-                style={{ letterSpacing: "0.15em" }}
+                className="text-mokka hover:text-gold transition-colors duration-300 font-['Figtree'] text-xs font-medium uppercase tracking-widest"
+                style={{ letterSpacing: "0.1em" }}
               >
                 {link.label}
               </button>
@@ -74,7 +66,7 @@ export default function Navigation() {
           </nav>
 
           {/* CTA */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4 flex-shrink-0">
             <button
               onClick={() => handleNavClick("#kontakt")}
               className="btn-gold text-xs"
@@ -85,7 +77,7 @@ export default function Navigation() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden text-cream p-2"
+            className="md:hidden text-cream p-2 flex-shrink-0"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -107,7 +99,7 @@ export default function Navigation() {
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="text-left text-mokka hover:text-gold transition-colors duration-300 font-['Outfit'] text-sm uppercase tracking-widest py-2 border-b border-white/5"
+                  className="text-left text-mokka hover:text-gold transition-colors duration-300 font-['Figtree'] text-sm font-medium uppercase tracking-widest py-2 border-b border-white/5"
                 >
                   {link.label}
                 </button>

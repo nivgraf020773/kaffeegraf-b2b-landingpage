@@ -52,10 +52,10 @@ export default function USPSection() {
                   className="text-[#C9A84C]/60 group-hover:text-[#C9A84C] transition-colors duration-300"
                 />
               </div>
-              <h3 className="font-['Cormorant_Garamond'] text-xl font-semibold text-cream mb-2">
+              <h3 className="font-['Poppins'] text-xl font-semibold text-cream mb-2">
                 {usp.title}
               </h3>
-              <p className="font-['Outfit'] text-xs text-mokka leading-relaxed">
+              <p className="font-['Figtree'] text-xs text-mokka leading-relaxed">
                 {usp.description}
               </p>
             </motion.div>

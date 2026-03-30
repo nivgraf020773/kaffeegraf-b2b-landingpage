@@ -55,12 +55,12 @@ export default function NachhaltigkeitSection() {
                   Nachhaltigkeit & Transparenz
                 </span>
               </div>
-              <h2 className="font-['Cormorant_Garamond'] text-4xl md:text-5xl font-light text-cream leading-tight">
+              <h2 className="font-['Poppins'] text-4xl md:text-5xl font-light text-cream leading-tight">
                 Wir wissen,
                 <br />
                 <span className="font-semibold italic text-[#C9A84C]">woher unser Kaffee kommt.</span>
               </h2>
-              <p className="font-['Outfit'] text-mokka text-sm mt-4 leading-relaxed">
+              <p className="font-['Figtree'] text-mokka text-sm mt-4 leading-relaxed">
                 Nachhaltigkeit ist bei kaffeegraf kein Trend, sondern
                 Grundprinzip. Wir arbeiten ausschließlich mit Partnern, die
                 soziale und ökologische Verantwortung ernst nehmen.
@@ -83,10 +83,10 @@ export default function NachhaltigkeitSection() {
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-['Cormorant_Garamond'] text-lg font-semibold text-cream mb-1">
+                    <h4 className="font-['Poppins'] text-lg font-semibold text-cream mb-1">
                       {value.title}
                     </h4>
-                    <p className="font-['Outfit'] text-xs text-mokka leading-relaxed">
+                    <p className="font-['Figtree'] text-xs text-mokka leading-relaxed">
                       {value.description}
                     </p>
                   </div>
@@ -122,10 +122,10 @@ export default function NachhaltigkeitSection() {
               <div className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-[#C9A84C] mb-1">
                 Dulima Divina
               </div>
-              <div className="font-['Cormorant_Garamond'] text-base font-semibold text-cream">
+              <div className="font-['Poppins'] text-base font-semibold text-cream">
                 Kolumbien
               </div>
-              <div className="font-['Outfit'] text-[10px] text-mokka mt-1">
+              <div className="font-['Figtree'] text-[10px] text-mokka mt-1">
                 100% Arabica · Single Origin
               </div>
             </motion.div>
