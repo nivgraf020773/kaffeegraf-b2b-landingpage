@@ -11,7 +11,7 @@ const values = [
     icon: Eye,
     title: "Transparente Lieferkette",
     description:
-      "Wir kennen die Herkunft jeder Bohne. Von der Plantage bis zur Rösterei – vollständige Rückverfolgbarkeit ist für uns kein Marketing-Versprechen, sondern Standard.",
+      "Wir kennen die Herkunft jeder Bohne. Von der Plantage bis zur Rösterei –  Rückverfolgbarkeit ist für uns kein Marketing-Versprechen, sondern Standard.",
   },
   {
     icon: Leaf,
@@ -23,13 +23,13 @@ const values = [
     icon: MapPin,
     title: "Direkte Partnerschaften",
     description:
-      "Wir arbeiten direkt mit Röstereien zusammen, die enge Beziehungen zu den Produzenten pflegen – für faire Preise entlang der gesamten Wertschöpfungskette.",
+      "Wir arbeiten direkt mit Lieferanten zusammen, die enge Beziehungen zu den Produzenten pflegen – für faire Preise entlang der gesamten Wertschöpfungskette.",
   },
   {
     icon: Award,
     title: "Specialty Coffee Standard",
     description:
-      "Alle Sorten erfüllen den Specialty-Coffee-Standard der SCA (Specialty Coffee Association) – das bedeutet: nur Bohnen mit einem Cupping-Score von 80+ Punkten.",
+      "Alle Sorten erfüllen den Specialty-Coffee-Standard der SCA (Specialty Coffee Association) – das bedeutet: bei Kaffeegraf gibt es nur Bohnen mit einem Cupping-Score von 80+ Punkten.",
   },
 ];
 

@@ -119,7 +119,7 @@ export default function TestimonialsSection() {
           className="mt-12 text-center"
         >
           <p className="font-['Figtree'] text-sm text-mokka mb-6">
-            Werden Sie einer unserer ersten Referenzkunden und profitieren Sie
+            Werden Sie einer unserer Referenzkunden und profitieren Sie
             von exklusiven Konditionen beim Einstieg.
           </p>
           <button
