@@ -1,25 +1,31 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+/* kaffeegraf – B2B Landingpage
+   Design: Refined Dark Elegance
+   Sections: Hero → USP → Sortiment → Verkostung → Beratung → Nachhaltigkeit → Testimonials → Kontakt → Footer
+*/
+import Navigation from "@/components/Navigation";
+import HeroSection from "@/components/HeroSection";
+import USPSection from "@/components/USPSection";
+import SortimentSection from "@/components/SortimentSection";
+import VerkostungSection from "@/components/VerkostungSection";
+import BeratungSection from "@/components/BeratungSection";
+import NachhaltigkeitSection from "@/components/NachhaltigkeitSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import KontaktSection from "@/components/KontaktSection";
+import Footer from "@/components/Footer";
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
- */
 export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
-
   return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
-      </main>
+    <div className="min-h-screen" style={{ backgroundColor: "#0D0D0B" }}>
+      <Navigation />
+      <HeroSection />
+      <USPSection />
+      <SortimentSection />
+      <VerkostungSection />
+      <BeratungSection />
+      <NachhaltigkeitSection />
+      <TestimonialsSection />
+      <KontaktSection />
+      <Footer />
     </div>
   );
 }

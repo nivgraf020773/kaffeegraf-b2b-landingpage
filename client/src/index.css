@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================================
+   kaffeegraf – "Refined Dark Elegance" Design System
+   Background: warm near-black (#0D0D0D–#1A1512)
+   Accent: warm gold (#C9A84C)
+   Text: cream (#F0EAD6) / muted mokka (#A89880)
+   Fonts: Cormorant Garamond (display) + Outfit (body) + JetBrains Mono (specs)
+   ============================================================ */
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -27,90 +35,49 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-gold: var(--gold);
+  --color-cream: var(--cream);
+  --color-mokka: var(--mokka);
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
+  --radius: 0.25rem;
+  /* Dark warm background */
+  --background: oklch(0.10 0.008 55);
+  --foreground: oklch(0.92 0.012 75);
+  /* Cards slightly lighter */
+  --card: oklch(0.14 0.010 55);
+  --card-foreground: oklch(0.92 0.012 75);
+  --popover: oklch(0.14 0.010 55);
+  --popover-foreground: oklch(0.92 0.012 75);
+  /* Gold primary */
+  --primary: oklch(0.72 0.10 75);
+  --primary-foreground: oklch(0.10 0.008 55);
+  /* Subtle secondary */
+  --secondary: oklch(0.18 0.010 55);
+  --secondary-foreground: oklch(0.80 0.012 75);
+  --muted: oklch(0.16 0.008 55);
+  --muted-foreground: oklch(0.60 0.015 70);
+  --accent: oklch(0.72 0.10 75);
+  --accent-foreground: oklch(0.10 0.008 55);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
-}
-
-.dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.72 0.10 75);
+  /* Brand colors */
+  --gold: #C9A84C;
+  --cream: #F0EAD6;
+  --mokka: #A89880;
+  /* Sidebar */
+  --sidebar: oklch(0.12 0.008 55);
+  --sidebar-foreground: oklch(0.92 0.012 75);
+  --sidebar-primary: oklch(0.72 0.10 75);
+  --sidebar-primary-foreground: oklch(0.10 0.008 55);
+  --sidebar-accent: oklch(0.18 0.010 55);
+  --sidebar-accent-foreground: oklch(0.92 0.012 75);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(0.72 0.10 75);
 }
 
 @layer base {
@@ -119,6 +86,13 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Outfit', sans-serif;
+    background-color: #0D0D0B;
+    /* Subtle noise texture */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Cormorant Garamond', serif;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -134,24 +108,11 @@
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
   .container {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    padding-left: 1rem;
     padding-right: 1rem;
   }
 
@@ -162,16 +123,102 @@
 
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+      max-width: 1280px;
     }
+  }
+
+  /* Gold divider line */
+  .gold-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #C9A84C55, transparent);
+  }
+
+  /* Gold accent text */
+  .text-gold {
+    color: #C9A84C;
+  }
+
+  .text-cream {
+    color: #F0EAD6;
+  }
+
+  .text-mokka {
+    color: #A89880;
+  }
+
+  /* Section backgrounds */
+  .bg-surface {
+    background-color: #1A1512;
+  }
+
+  .bg-surface-2 {
+    background-color: #141210;
+  }
+
+  /* Gold button */
+  .btn-gold {
+    background-color: #C9A84C;
+    color: #0D0D0B;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
+    border: 1px solid #C9A84C;
+  }
+
+  .btn-gold:hover {
+    background-color: transparent;
+    color: #C9A84C;
+  }
+
+  .btn-outline-gold {
+    background-color: transparent;
+    color: #C9A84C;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
+    border: 1px solid #C9A84C55;
+  }
+
+  .btn-outline-gold:hover {
+    border-color: #C9A84C;
+    color: #C9A84C;
+    background-color: #C9A84C10;
+  }
+
+  /* Spec mono text */
+  .font-mono-spec {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #A89880;
+  }
+
+  /* Card hover glow */
+  .card-glow {
+    transition: all 0.4s ease;
+    border: 1px solid rgba(201, 168, 76, 0.1);
+  }
+
+  .card-glow:hover {
+    border-color: rgba(201, 168, 76, 0.35);
+    box-shadow: 0 0 30px rgba(201, 168, 76, 0.08);
   }
 }
