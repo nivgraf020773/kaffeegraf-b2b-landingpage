@@ -1,165 +1,166 @@
-/* kaffeegraf HeroSection – Refined Dark Elegance
-   Full-height hero with coffee bean bg, product image, asymmetric layout */
-import { motion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+/* kaffeegraf Hero Section – B2B Funnel
+   Headline: "Besserer Kaffee im Unternehmen – direkt bei dir verkostet."
+   Fokus: Klare CTAs für Neukunden und Bestandskunden */
 
-const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-hero-bg-7JtjuGuTkw526Bgd324JiM.webp";
-const PRODUCT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-product-nobg_ce1893f3.png";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 export default function HeroSection() {
-  const scrollToNext = () => {
-    const el = document.querySelector("#sortiment");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background image with overlay */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src={HERO_BG}
-          alt="Kaffeebohnen"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0D0D0B]/95 via-[#0D0D0B]/80 to-[#0D0D0B]/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0B] via-transparent to-[#0D0D0B]/30" />
+    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#F8F6F1] via-[#FAFAF8] to-[#F5F3EE] overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-[0.03]">
+        <div className="absolute inset-0" style={{
+          backgroundImage: "radial-gradient(circle at 20% 50%, #8B6F47 0%, transparent 50%)",
+          backgroundSize: "200% 200%"
+        }} />
       </div>
 
-      {/* Content */}
-      <div className="container relative z-10 pt-24 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
-          {/* Left: Text */}
-          <div className="flex flex-col justify-center">
-            {/* Eyebrow */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex items-center gap-3 mb-6"
-            >
-              <div className="h-px w-8 bg-gold opacity-60" />
-              <span className="font--mono-spec text-[#C9A84C] text-xs uppercase tracking-[0.25em] font-['JetBrains_Mono']">
-                100% Specialty Coffee · B2B
+      <div className="container relative z-10 py-20 md:py-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left: Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8"
+          >
+            {/* Tagline */}
+            <div className="flex items-center gap-3">
+              <div className="h-px w-8 bg-[#8B6F47]" />
+              <span className="font-['Poppins'] text-sm font-semibold uppercase tracking-wider text-[#8B6F47]">
+                B2B Specialty Coffee
               </span>
-            </motion.div>
+            </div>
 
-            {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="font-['Poppins'] text-5xl md:text-6xl lg:text-7xl font-light leading-[1.05] text-cream mb-6"
-            >
-              Kaffee, der
+            {/* Main Headline */}
+            <h1 className="font-['Poppins'] text-5xl md:text-6xl lg:text-7xl font-light leading-tight text-[#1A1410]">
+              Besserer Kaffee im Unternehmen –
               <br />
-              <span className="font-semibold italic text-[#C9A84C]">überzeugt.</span>
-              <br />
-              <span className="font-light">Nicht verspricht.</span>
-            </motion.h1>
+              <span className="font-semibold italic text-[#8B6F47]">direkt bei dir verkostet.</span>
+            </h1>
 
             {/* Subline */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="font-['Figtree'] text-mokka text-base md:text-lg leading-relaxed max-w-md mb-10"
-            >
-              Wir bringen Specialty Coffee direkt in Ihr Büro – mit persönlicher
-              Beratung, Verkostung auf Ihren Maschinen und transparenter
-              Lieferkette. Keine Kompromisse bei der Qualität.
-            </motion.p>
+            <p className="font-['Figtree'] text-lg text-[#5A5550] leading-relaxed max-w-xl">
+              Wir verkosten den Kaffee direkt bei dir im Betrieb – abgestimmt auf Maschine, Wasser und Nutzung. Keine Standardlösung, sondern die perfekte Lösung für dich.
+            </p>
 
             {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-              className="flex flex-col sm:flex-row gap-4"
-            >
-              <button
-                onClick={() => {
-                  const el = document.querySelector("#kontakt");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="btn-gold"
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Kostenlose Verkostung anfragen
-              </button>
-              <button
-                onClick={() => {
-                  const el = document.querySelector("#sortiment");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="btn-outline-gold"
+                <Button
+                  onClick={() => {
+                    const el = document.querySelector("#main-conversion");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="bg-[#8B6F47] hover:bg-[#6F5A3A] text-white px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
+                >
+                  Kaffee bei dir im Betrieb verkosten
+                </Button>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Sortiment entdecken
-              </button>
-            </motion.div>
-
-            {/* Trust signals */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1.2 }}
-              className="flex items-center gap-6 mt-12 pt-8 border-t border-white/8"
-            >
-              {[
-                { value: "100%", label: "Specialty Coffee" },
-                { value: "3", label: "Sorten für B2B" },
-                { value: "Vor Ort", label: "Verkostung" },
-              ].map((item) => (
-                <div key={item.label} className="text-center">
-                  <div className="font-['Poppins'] text-2xl font-semibold text-[#C9A84C]">
-                    {item.value}
-                  </div>
-                  <div className="font-['Figtree'] text-xs text-mokka uppercase tracking-wider mt-1">
-                    {item.label}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Right: Product Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92, x: 40 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 1.2, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="hidden lg:flex items-center justify-center relative"
-          >
-            {/* Glow behind product */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div
-                className="w-64 h-64 rounded-full opacity-25 blur-3xl"
-                style={{ background: "radial-gradient(circle, #C9A84C 0%, transparent 70%)" }}
-              />
+                <Button
+                  onClick={() => {
+                    const el = document.querySelector("#existing-customers");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  variant="outline"
+                  className="border-2 border-[#8B6F47] text-[#8B6F47] hover:bg-[#8B6F47] hover:text-white px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
+                >
+                  B2B-Zugang für Bestandskunden
+                </Button>
+              </motion.div>
             </div>
-            <img
-              src={PRODUCT_IMG}
-              alt="kaffeegraf Kaffeebeutel Complex"
-              className="relative z-10 w-72 xl:w-96"
-              style={{ filter: "drop-shadow(0 20px 80px rgba(201,168,76,0.25)) drop-shadow(0 0 40px rgba(201,168,76,0.1))" }}
-            />
+
+            {/* Trust badges */}
+            <div className="flex flex-wrap gap-6 pt-8 border-t border-[#E0D9D0]">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-[#8B6F47] rounded-full" />
+                <span className="font-['Figtree'] text-sm text-[#5A5550]">100% Specialty Coffee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-[#8B6F47] rounded-full" />
+                <span className="font-['Figtree'] text-sm text-[#5A5550]">Verkostung vor Ort</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-[#8B6F47] rounded-full" />
+                <span className="font-['Figtree'] text-sm text-[#5A5550]">Persönliche Beratung</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right: Visual */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative h-96 md:h-full flex items-center justify-center"
+          >
+            {/* Subtle coffee cup illustration */}
+            <div className="relative w-full max-w-sm">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8B6F47]/10 to-[#C9A84C]/5 rounded-3xl blur-3xl" />
+              <div className="relative bg-white/50 backdrop-blur-sm rounded-3xl p-12 border border-[#E0D9D0]/50">
+                <svg
+                  className="w-full h-full text-[#8B6F47]"
+                  viewBox="0 0 200 240"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* Coffee cup */}
+                  <path
+                    d="M50 80 L50 160 Q50 180 70 180 L130 180 Q150 180 150 160 L150 80 Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                  />
+                  {/* Cup handle */}
+                  <path
+                    d="M150 100 Q170 100 170 130 Q170 160 150 160"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                  />
+                  {/* Coffee liquid */}
+                  <path
+                    d="M52 140 L148 140 Q148 165 130 170 L70 170 Q52 165 52 140 Z"
+                    fill="currentColor"
+                    opacity="0.3"
+                  />
+                  {/* Steam */}
+                  <path
+                    d="M70 60 Q70 40 80 30"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    fill="none"
+                    opacity="0.5"
+                  />
+                  <path
+                    d="M100 50 Q100 30 110 20"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    fill="none"
+                    opacity="0.5"
+                  />
+                  <path
+                    d="M130 60 Q130 40 140 30"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    fill="none"
+                    opacity="0.5"
+                  />
+                </svg>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.button
-        onClick={scrollToNext}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-mokka hover:text-gold transition-colors"
-      >
-        <span className="font-['Figtree'] text-xs uppercase tracking-widest">Entdecken</span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          <ArrowDown size={16} />
-        </motion.div>
-      </motion.button>
     </section>
   );
 }
