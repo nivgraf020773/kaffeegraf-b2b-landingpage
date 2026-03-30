@@ -16,7 +16,7 @@ const products = [
       { label: "Arabica", value: "60%" },
       { label: "Robusta", value: "40%" },
       { label: "Röstgrad", value: "Medium-Dark" },
-      { label: "Profil", value: "Melasse · Kirsche · Schokolade" },
+      { label: "Profil", value: "Melasse · Kirsche · Bitter-Schoko" },
     ],
     badge: "Bestseller",
     highlight: true,

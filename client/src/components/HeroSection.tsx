@@ -65,7 +65,7 @@ export default function HeroSection() {
               transition={{ duration: 0.8, delay: 0.7 }}
               className="font-['Figtree'] text-[#D4C5B0] text-base md:text-lg leading-relaxed max-w-md"
             >
-              Wir verkosten den Kaffee direkt bei Ihnen im Betrieb – abgestimmt auf Maschine, Wasser und Nutzung. Keine Standardlösung, sondern die perfekte Lösung für dich.
+              Wir verkosten den Kaffee direkt bei Ihnen im Betrieb – abgestimmt auf Maschine, Wasser und Nutzung. Keine Standardlösung, sondern die perfekte Lösung für Sie.
             </motion.p>
 
             {/* CTAs */}
