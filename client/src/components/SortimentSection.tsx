@@ -168,10 +168,9 @@ export default function SortimentSection() {
             <br />
             <span className="font-semibold italic text-[#C9A84C]">Jede ein Statement.</span>
           </h2>
-          <p className="font-['Figtree'] text-mokka text-base mt-6 max-w-xl leading-relaxed">
+          <p className="font-['Figtree'] text-mokka text-base mt-6 max-w-xl leading-relaxed" style={{width: '650px'}}>
             Unser B2B-Sortiment ist bewusst kuratiert: Qualität statt Masse.
-            Alle Sorten sind als 100% Specialty Coffee zertifiziert und werden
-            frisch geröstet geliefert.
+            Alle Sorten sind 100% Specialty Coffee und werden frisch geröstet und aromageschützt geliefert.
           </p>
         </motion.div>
 
