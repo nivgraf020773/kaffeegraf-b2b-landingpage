@@ -51,7 +51,7 @@ export default function HeroSection() {
               transition={{ duration: 1, delay: 0.4 }}
               className="font-['Poppins'] text-6xl md:text-7xl lg:text-8xl font-light leading-[0.95] text-white"
             >
-              Besserer Kaffee
+              Bester Kaffee
               <br />
               <span className="font-semibold italic text-[#C9A84C]">direkt bei dir</span>
               <br />
