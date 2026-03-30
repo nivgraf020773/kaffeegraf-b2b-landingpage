@@ -136,7 +136,7 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
         }}
         className={product.highlight ? "btn-gold text-center" : "btn-outline-gold text-center"}
       >
-        Muster anfragen
+        Verkostung anfragen
       </button>
     </motion.div>
   );
