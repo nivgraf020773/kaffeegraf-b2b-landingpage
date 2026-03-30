@@ -82,7 +82,7 @@ export default function HeroSection() {
                 }}
                 className="bg-[#C9A84C] hover:bg-[#B39A3D] text-[#0D0D0B] px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
               >
-                Kaffee bei dir verkosten
+                Kaffee bei Ihnen verkosten
               </Button>
               <Button
                 onClick={() => {

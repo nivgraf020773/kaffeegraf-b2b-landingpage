@@ -107,10 +107,10 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
           {product.tagline}
         </span>
       </div>
-      <h3 className="font-['Poppins'] text-3xl font-semibold text-cream mb-4 tracking-wide">
+      <h3 className="font-['Poppins'] text-3xl font-semibold text-cream mb-4 tracking-wide text-center">
         {product.name}
       </h3>
-      <p className="font-['Figtree'] text-sm text-mokka leading-relaxed mb-6 flex-1">
+      <p className="font-['Figtree'] text-sm text-mokka leading-relaxed mb-6 flex-1 text-center">
         {product.description}
       </p>
 
