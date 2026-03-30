@@ -1,17 +1,13 @@
-/* kaffeegraf HeroSection – Refined Dark Elegance
-   Full-height hero with coffee bean bg, product image, asymmetric layout */
+/* kaffeegraf Hero Section – Dark Elegance B2B Funnel
+   Dunkles Tiefschwarz, Goldakzente, Kaffeebohnen-Hintergrund, Premium-Feeling */
+
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-hero-bg-7JtjuGuTkw526Bgd324JiM.webp";
-const PRODUCT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-product-nobg_ce1893f3.png";
 
 export default function HeroSection() {
-  const scrollToNext = () => {
-    const el = document.querySelector("#sortiment");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background image with overlay */}
@@ -29,16 +25,21 @@ export default function HeroSection() {
       <div className="container relative z-10 pt-24 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
           {/* Left: Text */}
-          <div className="flex flex-col justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col justify-center space-y-8"
+          >
             {/* Eyebrow */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex items-center gap-3 mb-6"
+              className="flex items-center gap-3"
             >
-              <div className="h-px w-8 bg-gold opacity-60" />
-              <span className="font--mono-spec text-[#C9A84C] text-xs uppercase tracking-[0.25em] font-['JetBrains_Mono']">
+              <div className="h-px w-8 bg-[#C9A84C] opacity-60" />
+              <span className="font-['Poppins'] text-[#C9A84C] text-xs uppercase tracking-[0.25em] font-semibold">
                 100% Specialty Coffee · B2B
               </span>
             </motion.div>
@@ -48,13 +49,13 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4 }}
-              className="font-['Poppins'] text-5xl md:text-6xl lg:text-7xl font-light leading-[1.05] text-cream mb-6"
+              className="font-['Cormorant_Garamond'] text-6xl md:text-7xl lg:text-8xl font-light leading-[0.95] text-white"
             >
-              Kaffee, der
+              Besserer Kaffee
               <br />
-              <span className="font-semibold italic text-[#C9A84C]">überzeugt.</span>
+              <span className="font-semibold italic text-[#C9A84C]">direkt bei dir</span>
               <br />
-              <span className="font-light">Nicht verspricht.</span>
+              <span className="font-light">verkostet.</span>
             </motion.h1>
 
             {/* Subline */}
@@ -62,11 +63,9 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
-              className="font-['Figtree'] text-mokka text-base md:text-lg leading-relaxed max-w-md mb-10"
+              className="font-['Figtree'] text-[#D4C5B0] text-base md:text-lg leading-relaxed max-w-md"
             >
-              Wir bringen Specialty Coffee direkt in Ihr Büro – mit persönlicher
-              Beratung, Verkostung auf Ihren Maschinen und transparenter
-              Lieferkette. Keine Kompromisse bei der Qualität.
+              Wir verkosten den Kaffee direkt bei dir im Betrieb – abgestimmt auf Maschine, Wasser und Nutzung. Keine Standardlösung, sondern die perfekte Lösung für dich.
             </motion.p>
 
             {/* CTAs */}
@@ -74,26 +73,27 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.9 }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-4 pt-4"
             >
-              <button
+              <Button
                 onClick={() => {
-                  const el = document.querySelector("#kontakt");
+                  const el = document.querySelector("#main-conversion");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="btn-gold"
+                className="bg-[#C9A84C] hover:bg-[#B39A3D] text-[#0D0D0B] px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
               >
-                Kostenlose Verkostung anfragen
-              </button>
-              <button
+                Kaffee bei dir verkosten
+              </Button>
+              <Button
                 onClick={() => {
-                  const el = document.querySelector("#sortiment");
+                  const el = document.querySelector("#existing-customers");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="btn-outline-gold"
+                variant="outline"
+                className="border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-[#0D0D0B] px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
               >
-                Sortiment entdecken
-              </button>
+                B2B-Zugang
+              </Button>
             </motion.div>
 
             {/* Trust signals */}
@@ -105,22 +105,22 @@ export default function HeroSection() {
             >
               {[
                 { value: "100%", label: "Specialty Coffee" },
-                { value: "3", label: "Sorten für B2B" },
                 { value: "Vor Ort", label: "Verkostung" },
+                { value: "Persönlich", label: "Beratung" },
               ].map((item) => (
                 <div key={item.label} className="text-center">
-                  <div className="font-['Poppins'] text-2xl font-semibold text-[#C9A84C]">
+                  <div className="font-['Poppins'] text-xl font-semibold text-[#C9A84C]">
                     {item.value}
                   </div>
-                  <div className="font-['Figtree'] text-xs text-mokka uppercase tracking-wider mt-1">
+                  <div className="font-['Figtree'] text-xs text-[#D4C5B0] uppercase tracking-wider mt-1">
                     {item.label}
                   </div>
                 </div>
               ))}
             </motion.div>
-          </div>
+          </motion.div>
 
-          {/* Right: Product Image */}
+          {/* Right: Visual */}
           <motion.div
             initial={{ opacity: 0, scale: 0.92, x: 40 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
@@ -134,23 +134,47 @@ export default function HeroSection() {
                 style={{ background: "radial-gradient(circle, #C9A84C 0%, transparent 70%)" }}
               />
             </div>
-            <img
-              src={PRODUCT_IMG}
-              alt="kaffeegraf Kaffeebeutel Complex"
+            <svg
               className="relative z-10 w-72 xl:w-96"
-              style={{ filter: "drop-shadow(0 20px 80px rgba(201,168,76,0.25)) drop-shadow(0 0 40px rgba(201,168,76,0.1))" }}
-            />
+              viewBox="0 0 200 240"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Coffee cup */}
+              <path
+                d="M50 80 L50 160 Q50 180 70 180 L130 180 Q150 180 150 160 L150 80 Z"
+                stroke="#C9A84C"
+                strokeWidth="2"
+                fill="none"
+              />
+              {/* Cup handle */}
+              <path
+                d="M150 100 Q170 100 170 130 Q170 160 150 160"
+                stroke="#C9A84C"
+                strokeWidth="2"
+                fill="none"
+              />
+              {/* Coffee liquid */}
+              <path
+                d="M52 140 L148 140 Q148 165 130 170 L70 170 Q52 165 52 140 Z"
+                fill="#C9A84C"
+                opacity="0.3"
+              />
+            </svg>
           </motion.div>
         </div>
       </div>
 
       {/* Scroll indicator */}
       <motion.button
-        onClick={scrollToNext}
+        onClick={() => {
+          const el = document.querySelector("#problem");
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-mokka hover:text-gold transition-colors"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-[#D4C5B0] hover:text-[#C9A84C] transition-colors"
       >
         <span className="font-['Figtree'] text-xs uppercase tracking-widest">Entdecken</span>
         <motion.div
