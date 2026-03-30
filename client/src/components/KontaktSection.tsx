@@ -1,5 +1,5 @@
 /* kaffeegraf KontaktSection – Refined Dark Elegance
-   Kontaktformular für Verkostungsanfragen */
+   Kontaktformular mit erweiterten Dropdown-Optionen und bedingten Feldern */
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Mail, Phone, Globe, CheckCircle } from "lucide-react";
@@ -15,8 +15,29 @@ export default function KontaktSection() {
     email: "",
     phone: "",
     type: "",
+    priority: "",
+    priorityOther: "",
     message: "",
   });
+
+  const typeOptions = [
+    { value: "buero", label: "Büro / Office (1–50 Mitarbeitende)" },
+    { value: "praxis", label: "Praxis / Kanzlei / Dienstleistung" },
+    { value: "gastronomie", label: "Fine Dining / anspruchsvolle Gastronomie" },
+    { value: "cafe", label: "Café / Kaffeehaus" },
+    { value: "hotel", label: "Hotel / Pension / Eventlocation" },
+    { value: "retail", label: "Geschäft / Retail (z. B. Feinkost, Concept Store)" },
+    { value: "event", label: "Event (einmaliger Bedarf)" },
+    { value: "sonstiges", label: "Sonstiges" },
+  ];
+
+  const priorityOptions = [
+    { value: "geschmack", label: "guter Geschmack" },
+    { value: "handhabung", label: "einfache Handhabung" },
+    { value: "nachhaltigkeit", label: "nachhaltiger Kaffee" },
+    { value: "beratung", label: "Beratung & Einstellung" },
+    { value: "anderes", label: "etwas anderes" },
+  ];
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -65,8 +86,8 @@ export default function KontaktSection() {
                 {
                   icon: Mail,
                   label: "E-Mail",
-                  value: "office@kaffeegraf.coffee",
-                  href: "mailto:office@kaffeegraf.coffee",
+                  value: "team@kaffeegraf.coffee",
+                  href: "mailto:team@kaffeegraf.coffee",
                 },
                 {
                   icon: Globe,
@@ -203,6 +224,7 @@ export default function KontaktSection() {
                   </div>
                 </div>
 
+                {/* Dropdown 1: Type */}
                 <div>
                   <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
                     Ich bin ... *
@@ -217,12 +239,67 @@ export default function KontaktSection() {
                     <option value="" disabled className="text-mokka">
                       Bitte wählen ...
                     </option>
-                    <option value="buero">Büro / Unternehmen</option>
-                    <option value="gastronomie">Gehobene Gastronomie</option>
-                    <option value="cafe">Selbständiges Café</option>
-                    <option value="sonstiges">Sonstiges</option>
+                    {typeOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
+
+                {/* Conditional Dropdown 2: Priority */}
+                {form.type && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
+                      Was ist dir besonders wichtig? *
+                    </label>
+                    <select
+                      name="priority"
+                      required={form.type !== ""}
+                      value={form.priority}
+                      onChange={handleChange}
+                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors"
+                    >
+                      <option value="" disabled className="text-mokka">
+                        Bitte wählen ...
+                      </option>
+                      {priorityOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Conditional Textfield for "etwas anderes" */}
+                    {form.priority === "anderes" && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="mt-4"
+                      >
+                        <input
+                          type="text"
+                          name="priorityOther"
+                          value={form.priorityOther}
+                          onChange={handleChange}
+                          maxLength={100}
+                          placeholder="Erzählen Sie uns, was dir wichtig ist (max. 100 Zeichen)"
+                          className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                        />
+                        <div className="text-[9px] text-mokka/50 mt-1">
+                          {form.priorityOther.length}/100
+                        </div>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                )}
 
                 <div>
                   <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">

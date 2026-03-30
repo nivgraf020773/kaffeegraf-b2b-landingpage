@@ -39,7 +39,7 @@ const products = [
     name: "DULIMA DIVINA",
     tagline: "Single Origin · Kolumbien",
     description:
-      "100% Arabica aus der Region Dulima, Kolumbien. Für Kenner und gehobene Gastronomie – ein Kaffee mit Charakter und Herkunft.",
+      "100% Arabica aus der Region Dulima, Kolumbien. Für Kenner und anspruchsvolle Gastronomie – ein Kaffee mit Charakter und Herkunft.",
     specs: [
       { label: "Arabica", value: "100%" },
       { label: "Herkunft", value: "Kolumbien" },

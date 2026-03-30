@@ -12,18 +12,18 @@ const targets = [
     title: "Büros & Unternehmen",
     description:
       "Vom kleinen Team bis zum Großraumbüro: Wir empfehlen den passenden Vollautomaten und die richtige Sorte für Ihren täglichen Kaffeebedarf.",
-    machines: ["Vollautomaten", "Kapselmaschinen", "Filter-Systeme"],
+    machines: ["Vollautomaten", "Filter-Systeme", "Espresso-Systeme"],
   },
   {
     icon: UtensilsCrossed,
-    title: "Gehobene Gastronomie",
+    title: "Anspruchsvolle Gastronomie",
     description:
       "Für Restaurants, die Kaffee als Teil des Erlebnisses verstehen. Siebträger-Systeme und Single-Origin-Sorten für den perfekten Abschluss.",
     machines: ["Siebträger", "Mühlen", "Espresso-Systeme"],
   },
   {
     icon: Coffee,
-    title: "Selbständige Cafés",
+    title: "Cafés",
     description:
       "Individuelle Beratung für Café-Betreiber: Maschine, Sorte, Röstgrad und White-Label-Option für Ihr eigenes Branding.",
     machines: ["Siebträger", "Vollautomaten", "White-Label"],
