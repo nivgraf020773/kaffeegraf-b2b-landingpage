@@ -38,7 +38,7 @@ export default function SolutionsSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="font-['Cormorant_Garamond'] text-5xl md:text-6xl font-light text-white">
+          <h2 className="font-['Poppins'] text-5xl md:text-6xl font-light text-white">
             Individuelle Lösungen statt Standardkaffee
           </h2>
         </motion.div>

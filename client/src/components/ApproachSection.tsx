@@ -21,7 +21,7 @@ export default function ApproachSection() {
           transition={{ duration: 0.8 }}
           className="max-w-3xl mx-auto"
         >
-          <h2 className="font-['Cormorant_Garamond'] text-5xl md:text-6xl font-light text-white mb-12">
+          <h2 className="font-['Poppins'] text-5xl md:text-6xl font-light text-white mb-12">
             Kaffee, der bei dir wirklich funktioniert
           </h2>
           <div className="space-y-6">

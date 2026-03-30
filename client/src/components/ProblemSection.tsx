@@ -15,7 +15,7 @@ export default function ProblemSection() {
           transition={{ duration: 0.8 }}
           className="max-w-3xl mx-auto text-center space-y-6"
         >
-          <h2 className="font-['Cormorant_Garamond'] text-5xl md:text-6xl font-light text-white">
+          <h2 className="font-['Poppins'] text-5xl md:text-6xl font-light text-white">
             Warum Kaffee im Unternehmen oft nicht überzeugt
           </h2>
           <p className="font-['Figtree'] text-lg text-[#D4C5B0] leading-relaxed">

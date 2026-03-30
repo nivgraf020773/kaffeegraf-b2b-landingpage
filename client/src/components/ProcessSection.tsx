@@ -22,7 +22,7 @@ export default function ProcessSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="font-['Cormorant_Garamond'] text-5xl md:text-6xl font-light text-white">
+          <h2 className="font-['Poppins'] text-5xl md:text-6xl font-light text-white">
             So einfach geht's
           </h2>
           <p className="font-['Figtree'] text-[#C9A84C] mt-4">Ohne Verpflichtung</p>

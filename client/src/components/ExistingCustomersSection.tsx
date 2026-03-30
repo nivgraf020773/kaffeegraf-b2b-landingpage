@@ -17,7 +17,7 @@ export default function ExistingCustomersSection() {
           className="max-w-2xl mx-auto text-center space-y-8"
         >
           <div>
-            <h2 className="font-['Cormorant_Garamond'] text-5xl md:text-6xl font-light text-white mb-4">
+            <h2 className="font-['Poppins'] text-5xl md:text-6xl font-light text-white mb-4">
               Bereits Kunde?
             </h2>
             <p className="font-['Figtree'] text-lg text-[#D4C5B0] leading-relaxed">

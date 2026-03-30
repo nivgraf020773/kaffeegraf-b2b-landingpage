@@ -49,7 +49,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4 }}
-              className="font-['Cormorant_Garamond'] text-6xl md:text-7xl lg:text-8xl font-light leading-[0.95] text-white"
+              className="font-['Poppins'] text-6xl md:text-7xl lg:text-8xl font-light leading-[0.95] text-white"
             >
               Besserer Kaffee
               <br />
