@@ -1,25 +1,27 @@
 /* kaffeegraf KontaktSection – Refined Dark Elegance
-   Kontaktformular mit direkter Tally-Integration */
+   Kontaktformular mit WooCommerce API Integration */
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, Globe, CheckCircle } from "lucide-react";
+import { Mail, Globe, CheckCircle, AlertCircle } from "lucide-react";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 
 export default function KontaktSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     company: "",
     email: "",
     phone: "",
-    type: "",
+    businessType: "",
     priority: "",
-    priorityOther: "",
     message: "",
   });
 
-  const typeOptions = [
+  const businessTypeOptions = [
     { value: "buero", label: "Büro / Office (1–50 Mitarbeitende)" },
     { value: "praxis", label: "Praxis / Kanzlei / Dienstleistung" },
     { value: "gastronomie", label: "Fine Dining / anspruchsvolle Gastronomie" },
@@ -38,28 +40,58 @@ export default function KontaktSection() {
     { value: "anderes", label: "etwas anderes" },
   ];
 
+  const contactMutation = trpc.contact.submit.useMutation();
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Konstruiere die Tally-URL mit den Formular-Daten
-    const params = new URLSearchParams();
-    params.append("name", form.name);
-    params.append("email", form.email);
-    params.append("company", form.company);
-    params.append("phone", form.phone);
-    params.append("type", form.type);
-    params.append("priority", form.priority);
-    params.append("priorityOther", form.priorityOther);
-    params.append("message", form.message);
+    setIsLoading(true);
 
-    // Leite zu Tally weiter
-    window.location.href = `https://tally.so/r/NpYDJW?${params.toString()}`;
+    try {
+      await contactMutation.mutateAsync({
+        name: form.name,
+        email: form.email,
+        company: form.company,
+        phone: form.phone,
+        businessType: form.businessType,
+        priority: form.priority,
+        message: form.message,
+      });
+
+      setSubmitted(true);
+      setForm({
+        name: "",
+        company: "",
+        email: "",
+        phone: "",
+        businessType: "",
+        priority: "",
+        message: "",
+      });
+
+      toast.success(
+        "Vielen Dank! Wir melden uns innerhalb von 24 Stunden bei Ihnen."
+      );
+
+      // Reset form after 5 seconds
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 5000);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Es gab einen Fehler beim Verarbeiten Ihrer Anfrage.";
+      toast.error(errorMessage);
+      console.error("[Contact Form Error]", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -82,7 +114,9 @@ export default function KontaktSection() {
             <h2 className="font-['Poppins'] text-4xl md:text-5xl font-light text-cream leading-tight mb-6">
               Starten wir mit
               <br />
-              <span className="font-semibold italic text-[#C9A84C]">einer Verkostung.</span>
+              <span className="font-semibold italic text-[#C9A84C]">
+                einer Verkostung.
+              </span>
             </h2>
             <p className="font-['Figtree'] text-mokka text-sm leading-relaxed mb-10">
               Füllen Sie das Formular aus und wir melden uns innerhalb von 24
@@ -117,7 +151,10 @@ export default function KontaktSection() {
                   className="flex items-center gap-4 group"
                 >
                   <div className="w-10 h-10 border border-[#C9A84C]/20 flex items-center justify-center group-hover:border-[#C9A84C]/50 transition-colors duration-300">
-                    <item.icon size={14} className="text-[#C9A84C]/60 group-hover:text-[#C9A84C] transition-colors duration-300" />
+                    <item.icon
+                      size={14}
+                      className="text-[#C9A84C]/60 group-hover:text-[#C9A84C] transition-colors duration-300"
+                    />
                   </div>
                   <div>
                     <div className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka">
@@ -156,176 +193,177 @@ export default function KontaktSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <form
-              onSubmit={handleSubmit}
-              className="bg-[#1A1512] p-8 border border-white/5 space-y-5"
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                    Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="Max Mustermann"
-                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
-                  />
-                </div>
-                <div>
-                  <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                    Unternehmen *
-                  </label>
-                  <input
-                    type="text"
-                    name="company"
-                    required
-                    value={form.company}
-                    onChange={handleChange}
-                    placeholder="Muster GmbH"
-                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                    E-Mail *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="max@muster.at"
-                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
-                  />
-                </div>
-                <div>
-                  <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                    Telefon
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    placeholder="+43 ..."
-                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
-                  />
-                </div>
-              </div>
-
-              {/* Dropdown 1: Type */}
-              <div>
-                <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                  Ich bin ... *
-                </label>
-                <select
-                  name="type"
-                  required
-                  value={form.type}
-                  onChange={handleChange}
-                  className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors"
-                >
-                  <option value="" disabled className="text-mokka">
-                    Bitte wählen ...
-                  </option>
-                  {typeOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Conditional Dropdown 2: Priority */}
-              {form.type && (
+            {submitted ? (
+              <div className="bg-[#1A1512] p-8 border border-[#C9A84C]/30 flex flex-col items-center justify-center min-h-[500px]">
                 <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="mb-6"
                 >
+                  <CheckCircle
+                    size={64}
+                    className="text-[#C9A84C]"
+                    strokeWidth={1.5}
+                  />
+                </motion.div>
+                <h3 className="font-['Poppins'] text-2xl font-light text-cream text-center mb-3">
+                  Vielen Dank!
+                </h3>
+                <p className="font-['Figtree'] text-mokka text-center text-sm">
+                  Wir haben Ihre Anfrage erhalten und melden uns innerhalb von
+                  24 Stunden bei Ihnen.
+                </p>
+              </div>
+            ) : (
+              <form
+                onSubmit={handleSubmit}
+                className="bg-[#1A1512] p-8 border border-white/5 space-y-5"
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
+                      Name *
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      value={form.name}
+                      onChange={handleChange}
+                      placeholder="Max Mustermann"
+                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
+                      Unternehmen *
+                    </label>
+                    <input
+                      type="text"
+                      name="company"
+                      required
+                      value={form.company}
+                      onChange={handleChange}
+                      placeholder="Muster GmbH"
+                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
+                      E-Mail *
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      value={form.email}
+                      onChange={handleChange}
+                      placeholder="max@muster.at"
+                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
+                      Telefon
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={form.phone}
+                      onChange={handleChange}
+                      placeholder="+43 ..."
+                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                    />
+                  </div>
+                </div>
+
+                {/* Dropdown 1: Business Type */}
+                <div>
                   <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                    Was ist dir besonders wichtig? *
+                    Ich bin ... *
                   </label>
                   <select
-                    name="priority"
-                    required={form.type !== ""}
-                    value={form.priority}
+                    name="businessType"
+                    required
+                    value={form.businessType}
                     onChange={handleChange}
                     className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors"
                   >
                     <option value="" disabled className="text-mokka">
                       Bitte wählen ...
                     </option>
-                    {priorityOptions.map((opt) => (
+                    {businessTypeOptions.map((opt) => (
                       <option key={opt.value} value={opt.value}>
                         {opt.label}
                       </option>
                     ))}
                   </select>
-                </motion.div>
-              )}
+                </div>
 
-              {/* Conditional Text Field: Priority Other */}
-              {form.priority === "anderes" && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
+                {/* Conditional Dropdown 2: Priority */}
+                {form.businessType && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
+                      Was ist dir besonders wichtig? *
+                    </label>
+                    <select
+                      name="priority"
+                      required={form.businessType !== ""}
+                      value={form.priority}
+                      onChange={handleChange}
+                      className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors"
+                    >
+                      <option value="" disabled className="text-mokka">
+                        Bitte wählen ...
+                      </option>
+                      {priorityOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </motion.div>
+                )}
+
+                {/* Message */}
+                <div>
                   <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                    Bitte beschreiben Sie (max. 100 Zeichen) *
+                    Nachricht
                   </label>
                   <textarea
-                    name="priorityOther"
-                    required={form.priority === "anderes"}
-                    value={form.priorityOther}
+                    name="message"
+                    value={form.message}
                     onChange={handleChange}
-                    maxLength={100}
-                    placeholder="Ihre Anforderung..."
-                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30 resize-none h-20"
+                    placeholder="Erzählen Sie uns mehr über Ihre Anforderungen..."
+                    rows={4}
+                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30 resize-none"
                   />
-                  <div className="text-[9px] text-mokka/50 mt-1">
-                    {form.priorityOther.length}/100
-                  </div>
-                </motion.div>
-              )}
+                </div>
 
-              {/* Message */}
-              <div>
-                <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                  Nachricht
-                </label>
-                <textarea
-                  name="message"
-                  value={form.message}
-                  onChange={handleChange}
-                  placeholder="Weitere Informationen..."
-                  className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30 resize-none h-24"
-                />
-              </div>
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-[#C9A84C] text-[#0D0D0B] font-['Poppins'] font-semibold py-3 px-6 hover:bg-[#D4B85F] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? "Wird verarbeitet..." : "Verkostung anfragen"}
+                </button>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full bg-[#C9A84C] hover:bg-[#B39A3D] text-[#0D0D0B] px-6 py-4 font-['Poppins'] font-semibold rounded-lg transition-all duration-300 mt-6"
-              >
-                Verkostung anfragen
-              </button>
-
-              <p className="font-['Figtree'] text-[10px] text-mokka/60 text-center">
-                Ihre Daten werden sicher und DSGVO-konform verarbeitet.
-              </p>
-            </form>
+                <p className="font-['Figtree'] text-[11px] text-mokka/60 text-center">
+                  Ihre Daten werden sicher verarbeitet und nicht an Dritte
+                  weitergegeben.
+                </p>
+              </form>
+            )}
           </motion.div>
         </div>
       </div>
