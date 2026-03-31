@@ -10,7 +10,7 @@ const products = [
   {
     name: "BOARDROOM",
     tagline: "Houseblend Nr. 1",
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-boardroom_0bd5ff6a.png",
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-boardroom-new_6af88616.png",
     description:
       "Ein kraftvoller, ausgewogener Blend für den täglichen Bürobetrieb. Robusta verlängt Körper und Crema, Arabica bringt Aromatik und Süße.",
     specs: [
@@ -25,7 +25,7 @@ const products = [
   {
     name: "OFF THE RECORD",
     tagline: "Houseblend Nr. 2",
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-off-the-record_a80957bb.png",
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-off-the-record-new_3284e01f.png",
     description:
       "Für Büros, die einen milderen, aromatischeren Kaffee bevorzugen. Höherer Arabica-Anteil für mehr Fruchtigkeit und Finesse.",
     specs: [
@@ -40,7 +40,7 @@ const products = [
   {
     name: "DULIMA DIVINA",
     tagline: "Single Origin",
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-dulima-divina_f926686b.png",
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-dulima-divina-new_a85e744e.png",
     description:
       "100% Arabica aus der Region Huila, Kolumbien. Für Kenner und anspruchsvolle Gastronomie – ein Kaffee mit Charakter und Herkunft.",
     specs: [
