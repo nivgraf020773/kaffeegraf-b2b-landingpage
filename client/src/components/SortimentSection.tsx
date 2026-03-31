@@ -10,6 +10,7 @@ const products = [
   {
     name: "BOARDROOM",
     tagline: "Houseblend Nr. 1",
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-boardroom_0bd5ff6a.png",
     description:
       "Ein kraftvoller, ausgewogener Blend für den täglichen Bürobetrieb. Robusta verlängt Körper und Crema, Arabica bringt Aromatik und Süße.",
     specs: [
@@ -22,8 +23,9 @@ const products = [
     highlight: true,
   },
   {
-    name: "SMOOTH",
-    tagline: "Blend No. 2",
+    name: "OFF THE RECORD",
+    tagline: "Houseblend Nr. 2",
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-off-the-record_a80957bb.png",
     description:
       "Für Büros, die einen milderen, aromatischeren Kaffee bevorzugen. Höherer Arabica-Anteil für mehr Fruchtigkeit und Finesse.",
     specs: [
@@ -38,6 +40,7 @@ const products = [
   {
     name: "DULIMA DIVINA",
     tagline: "Single Origin",
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-dulima-divina_f926686b.png",
     description:
       "100% Arabica aus der Region Huila, Kolumbien. Für Kenner und anspruchsvolle Gastronomie – ein Kaffee mit Charakter und Herkunft.",
     specs: [
@@ -86,7 +89,7 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
             />
           )}
           <img
-            src={PRODUCT_IMG}
+            src={product.image || PRODUCT_IMG}
             alt={product.name}
             className="relative z-10 h-44 w-auto"
             style={{
@@ -107,10 +110,10 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
           {product.tagline}
         </span>
       </div>
-      <h3 className="font-['Poppins'] text-3xl font-semibold text-cream mb-4 tracking-wide text-center">
+      <h3 className="font-['Poppins'] text-2xl font-semibold text-cream mb-3 tracking-wide text-center">
         {product.name}
       </h3>
-      <p className="font-['Figtree'] text-sm text-mokka leading-relaxed mb-6 flex-1 text-center">
+      <p className="font-['Figtree'] text-xs text-mokka leading-relaxed mb-6 flex-1 text-center">
         {product.description}
       </p>
 
