@@ -51,33 +51,38 @@ describe("contact.submit", () => {
     }
   });
 
-  it("should call WooCommerce API with valid input", async () => {
-    const ctx: TrpcContext = {
-      user: null,
-      req: { protocol: "https", headers: {} } as TrpcContext["req"],
-      res: {} as TrpcContext["res"],
-    };
+  it(
+    "should call WooCommerce API with valid input",
+    async () => {
+      const ctx: TrpcContext = {
+        user: null,
+        req: { protocol: "https", headers: {} } as TrpcContext["req"],
+        res: {} as TrpcContext["res"],
+      };
 
-    const caller = appRouter.createCaller(ctx);
+      const caller = appRouter.createCaller(ctx);
 
-    try {
-      await caller.contact.submit({
-        name: "Test User",
-        email: "test@example.com",
-        company: "Test Company",
-        phone: "+43 1 234 5678",
-        businessType: "buero",
-        priority: "geschmack",
-        message: "Test",
-      });
-      console.log("[Contact Form Test] PASS: WooCommerce API called");
-    } catch (error) {
-      const errorStr = String(error);
-      if (errorStr.includes("nonce") || errorStr.includes("Sicherheit")) {
-        console.log("[Contact Form Test] PASS: WooCommerce API reachable");
-      } else {
+      try {
+        const result = await caller.contact.submit({
+          name: "Test User",
+          email: `test-${Date.now()}@example.com`,
+          company: "Test Company",
+          phone: "+43 1 234 5678",
+          businessType: "buero",
+          priority: "geschmack",
+          message: "Test",
+        });
+
+        console.log("[Contact Form Test] PASS: WooCommerce API called successfully");
+        console.log("[Contact Form Test] Result:", result);
+        expect(result.success).toBe(true);
+        expect(result.customerId).toBeDefined();
+      } catch (error) {
+        const errorStr = String(error);
+        console.error("[Contact Form Test] Error:", errorStr);
         throw error;
       }
-    }
-  });
+    },
+    { timeout: 30000 }
+  );
 });

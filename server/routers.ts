@@ -5,6 +5,8 @@ import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { createWooCommerceCustomer } from "./woocommerce";
 import { sendContactConfirmationEmail } from "./email";
+import { runAllDiagnostics } from "./woocommerce-diagnostic";
+import { runNonceInvestigation } from "./woocommerce-nonce-investigation";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -17,6 +19,17 @@ export const appRouter = router({
       return {
         success: true,
       } as const;
+    }),
+  }),
+
+  diagnostic: router({
+    woocommerce: publicProcedure.query(async () => {
+      const results = await runAllDiagnostics();
+      return results;
+    }),
+    nonceInvestigation: publicProcedure.query(async () => {
+      const results = await runNonceInvestigation();
+      return results;
     }),
   }),
 
