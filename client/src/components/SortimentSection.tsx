@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 
-const PRODUCT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-product-nobg_ce1893f3.png";
+const PRODUCT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-boardroom-product_a976d357.png";
 
 const products = [
   {
-    name: "COMPLEX",
-    tagline: "Blend No. 1",
+    name: "BOARDROOM",
+    tagline: "Houseblend Nr. 1",
     description:
-      "Ein kraftvoller, ausgewogener Blend für den täglichen Bürobetrieb. Robusta verleiht Körper und Crema, Arabica bringt Aromatik und Süße.",
+      "Ein kraftvoller, ausgewogener Blend für den täglichen Bürobetrieb. Robusta verlängt Körper und Crema, Arabica bringt Aromatik und Süße.",
     specs: [
       { label: "Arabica", value: "60%" },
       { label: "Robusta", value: "40%" },
