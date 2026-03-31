@@ -58,28 +58,39 @@ export async function createWooCommerceCustomer(
   );
 
   try {
-    const response = await fetch(
-      `${woocommerceUrl}/wp-json/wc/v3/customers`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${credentials}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(customerData),
-      }
-    );
+    const url = `${woocommerceUrl}/wp-json/wc/v3/customers`;
+    const authHeader = `Basic ${credentials}`;
+    
+    console.log("[WooCommerce API] Request Details:");
+    console.log("  URL:", url);
+    console.log("  Method: POST");
+    console.log("  Auth Header Present:", !!authHeader);
+    console.log("  Consumer Key:", consumerKey?.substring(0, 10) + "...");
+    console.log("  Request Body:", JSON.stringify(customerData));
+    
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: authHeader,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(customerData),
+    });
+
+    console.log("[WooCommerce API] Response Status:", response.status);
+    console.log("[WooCommerce API] Response Headers:", Object.fromEntries(response.headers));
+    
+    const responseData = await response.json();
+    console.log("[WooCommerce API] Response Body:", JSON.stringify(responseData));
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("[WooCommerce API Error]", errorData);
+      console.error("[WooCommerce API Error]", responseData);
       throw new Error(
-        `WooCommerce API error: ${response.status} - ${JSON.stringify(errorData)}`
+        `WooCommerce API error: ${response.status} - ${JSON.stringify(responseData)}`
       );
     }
 
-    const customer = await response.json();
-    return customer;
+    return responseData;
   } catch (error) {
     console.error("[WooCommerce Integration] Failed to create customer:", error);
     throw error;
