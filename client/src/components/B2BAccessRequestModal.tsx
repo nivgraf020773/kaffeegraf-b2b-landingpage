@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trpc } from "@/lib/trpc";
 
 interface B2BAccessRequestModalProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ export default function B2BAccessRequestModal({
   const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+
+  const b2bAccessMutation = trpc.b2b.accessRequest.useMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -48,9 +51,14 @@ export default function B2BAccessRequestModal({
     setIsLoading(true);
 
     try {
-      // TODO: Call backend endpoint to submit B2B access request
-      // For now, just simulate success
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await b2bAccessMutation.mutateAsync({
+        companyName: form.companyName,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        uid: form.uid.toUpperCase(),
+      });
+
       setSubmitted(true);
       setTimeout(() => {
         onClose();
@@ -58,7 +66,11 @@ export default function B2BAccessRequestModal({
         setForm({ companyName: "", name: "", email: "", phone: "", uid: "" });
       }, 3000);
     } catch (err) {
-      setError("Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.");
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
