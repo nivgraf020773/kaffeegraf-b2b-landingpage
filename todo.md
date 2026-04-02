@@ -27,9 +27,29 @@
 - [x] Form Validation Tests
 - [x] Success Message nach Formular-Submit
 
+### UID/VAT Validation
+- [x] UID/Steuernummer field in contact form
+- [x] Format validation (ATU + 8 digits)
+- [x] Backend UID validation
+- [x] UID storage in WooCommerce
+- [x] UID validation tests
+
+### B2B Access Request Feature
+- [x] "B2B-Zugang beantragen" button in Hero section
+- [x] Renamed "B2B-Zugang" to "B2B Login"
+- [x] B2BAccessRequestModal component
+- [x] B2B access request form (company, name, email, phone, UID)
+- [x] Backend b2b.accessRequest tRPC endpoint
+- [x] UID validation in B2B access request
+- [x] Success confirmation in modal
+- [x] B2B access request tests
+
 ### Deployment
 - [x] Projekt live auf Manus
 - [x] Domain: kaffeegraf-l7t4bfip.manus.space
+- [x] All tests passing (13/13)
+- [x] Code committed to GitHub
+- [ ] Deploy to Hostinger production (b2b-app.kaffeegraf.coffee)
 
 ---
 

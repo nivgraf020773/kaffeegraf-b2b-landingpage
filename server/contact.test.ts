@@ -17,6 +17,7 @@ describe("contact.submit", () => {
         name: "Test",
         email: "invalid",
         company: "Test Co",
+        uid: "ATU12345678",
         businessType: "buero",
         priority: "geschmack",
       } as any);
@@ -41,6 +42,7 @@ describe("contact.submit", () => {
         name: "Test",
         email: "test@example.com",
         company: "",
+        uid: "ATU12345678",
         businessType: "buero",
         priority: "geschmack",
       } as any);
@@ -67,6 +69,7 @@ describe("contact.submit", () => {
           name: "Test User",
           email: `test-${Date.now()}@example.com`,
           company: "Test Company",
+          uid: "ATU12345678",
           phone: "+43 1 234 5678",
           businessType: "buero",
           priority: "geschmack",
