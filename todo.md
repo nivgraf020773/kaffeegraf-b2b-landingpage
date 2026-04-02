@@ -111,3 +111,26 @@ Backend (Express + tRPC)
 WooCommerce
 └── B2B Customers (mit Custom Fields)
 ```
+
+## Phase 1.5: Bug Fixes & Improvements (IN PROGRESS)
+
+### Form Field Improvements
+- [ ] Split Name field into Vorname/Nachname in Kontaktformular
+- [ ] Split Name field into Vorname/Nachname in Verkostungsformular
+- [ ] Split Name field into Vorname/Nachname in B2B Access Request Modal
+- [ ] Update WooCommerce customer creation to use first_name/last_name correctly
+
+### B2B Access Request Bug Fixes
+- [ ] Fix: B2B access request values not sent to WooCommerce
+- [ ] Implement WooCommerce customer creation in b2b.accessRequest endpoint
+- [ ] Store B2B request data in WooCommerce with proper custom fields
+
+### Verkostungsformular Bug Fixes
+- [ ] Fix: UID not stored in WooCommerce from Verkostungsformular
+- [ ] Ensure UID is included in contact.submit mutation input
+- [ ] Verify UID is saved to WooCommerce meta_data
+
+### Navigation & UX
+- [ ] Add anchor link (#verkostung-form) to "Jetzt Verkosten" button
+- [ ] Ensure smooth scroll to Verkostungsformular
+

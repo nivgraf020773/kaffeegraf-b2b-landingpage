@@ -6,7 +6,7 @@
 import nodemailer from "nodemailer";
 
 interface ContactConfirmationEmailData {
-  name: string;
+  firstName: string;
   email: string;
   company: string;
 }
@@ -60,7 +60,7 @@ export async function sendContactConfirmationEmail(
       subject: "Vielen Dank für Ihre Anfrage – kaffeegraf",
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <h2 style="color: #8B4513;">Vielen Dank, ${data.name}!</h2>
+          <h2 style="color: #8B4513;">Vielen Dank, ${data.firstName}!</h2>
           
           <p>Wir haben Ihre Kontaktanfrage für <strong>${data.company}</strong> erhalten.</p>
           
@@ -74,7 +74,7 @@ export async function sendContactConfirmationEmail(
         </div>
       `,
       text: `
-Vielen Dank, ${data.name}!
+Vielen Dank, ${data.firstName}!
 
 Wir haben Ihre Kontaktanfrage für ${data.company} erhalten.
 
@@ -95,7 +95,7 @@ www.kaffeegraf.coffee
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
           <h2 style="color: #8B4513;">Neue B2B Kontaktanfrage</h2>
           
-          <p><strong>Name:</strong> ${data.name}</p>
+          <p><strong>Name:</strong> ${data.firstName}</p>
           <p><strong>Email:</strong> ${data.email}</p>
           <p><strong>Unternehmen:</strong> ${data.company}</p>
           

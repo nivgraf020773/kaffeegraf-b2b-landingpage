@@ -68,7 +68,8 @@ export const appRouter = router({
     submit: publicProcedure
       .input(
         z.object({
-          name: z.string().min(2, "Name muss mindestens 2 Zeichen lang sein"),
+          firstName: z.string().min(1, "Vorname erforderlich"),
+          lastName: z.string().min(1, "Nachname erforderlich"),
           email: z.string().email("Ungültige Email-Adresse"),
           company: z.string().min(2, "Unternehmensname erforderlich"),
           phone: z.string().optional(),
@@ -83,7 +84,8 @@ export const appRouter = router({
           // Create customer in WooCommerce
           const customer = await createWooCommerceCustomer({
             email: input.email,
-            first_name: input.name,
+            first_name: input.firstName,
+            last_name: input.lastName,
             billing: {
               company: input.company,
               phone: input.phone,
@@ -140,7 +142,7 @@ export const appRouter = router({
           // Send confirmation email (non-blocking)
           try {
             await sendContactConfirmationEmail({
-              name: input.name,
+              firstName: input.firstName,
               email: input.email,
               company: input.company,
             });

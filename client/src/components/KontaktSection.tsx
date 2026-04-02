@@ -1,4 +1,4 @@
-/* kaffeegraf KontaktSection – Refined Dark Elegance
+/* kaffeegraf – B2B Landingpage
    Kontaktformular mit WooCommerce API Integration */
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
@@ -12,7 +12,8 @@ export default function KontaktSection() {
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     company: "",
     email: "",
     phone: "",
@@ -55,7 +56,8 @@ export default function KontaktSection() {
 
     try {
       await contactMutation.mutateAsync({
-        name: form.name,
+        firstName: form.firstName,
+        lastName: form.lastName,
         email: form.email,
         company: form.company,
         phone: form.phone,
@@ -67,7 +69,8 @@ export default function KontaktSection() {
 
       setSubmitted(true);
       setForm({
-        name: "",
+        firstName: "",
+        lastName: "",
         company: "",
         email: "",
         phone: "",
@@ -226,32 +229,47 @@ export default function KontaktSection() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                      Name *
+                      Vorname *
                     </label>
                     <input
                       type="text"
-                      name="name"
+                      name="firstName"
                       required
-                      value={form.name}
+                      value={form.firstName}
                       onChange={handleChange}
-                      placeholder="Max Mustermann"
+                      placeholder="Max"
                       className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
                     />
                   </div>
                   <div>
                     <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                      Unternehmen *
+                      Nachname *
                     </label>
                     <input
                       type="text"
-                      name="company"
+                      name="lastName"
                       required
-                      value={form.company}
+                      value={form.lastName}
                       onChange={handleChange}
-                      placeholder="Muster GmbH"
+                      placeholder="Mustermann"
                       className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
                     />
                   </div>
+                </div>
+
+                <div>
+                  <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
+                    Unternehmen *
+                  </label>
+                  <input
+                    type="text"
+                    name="company"
+                    required
+                    value={form.company}
+                    onChange={handleChange}
+                    placeholder="Muster GmbH"
+                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                  />
                 </div>
 
                 <div>
@@ -361,31 +379,26 @@ export default function KontaktSection() {
                 {/* Message */}
                 <div>
                   <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                    Nachricht (optional)
+                    Nachricht
                   </label>
                   <textarea
                     name="message"
                     value={form.message}
                     onChange={handleChange}
                     placeholder="Erzählen Sie uns mehr über Ihre Anforderungen..."
-                    rows={3}
+                    rows={4}
                     className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30 resize-none"
                   />
                 </div>
 
                 {/* Submit Button */}
-                <motion.button
+                <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-[#C9A84C] text-[#0D0D0B] font-['Poppins'] font-semibold py-3 px-6 hover:bg-[#D4B85F] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[#C9A84C] hover:bg-[#B39A3D] disabled:bg-[#C9A84C]/50 text-[#0D0D0B] font-['Poppins'] font-semibold py-3 px-6 transition-all duration-300 disabled:cursor-not-allowed"
                 >
                   {isLoading ? "Wird verarbeitet..." : "Verkostung anfragen"}
-                </motion.button>
-
-                <p className="font-['Figtree'] text-[11px] text-mokka/60 text-center">
-                  Ihre Daten werden sicher verarbeitet und nicht an Dritte
-                  weitergegeben.
-                </p>
+                </button>
               </form>
             )}
           </motion.div>

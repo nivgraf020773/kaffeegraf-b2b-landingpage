@@ -14,7 +14,8 @@ describe("contact.submit", () => {
 
     try {
       await caller.contact.submit({
-        name: "Test",
+        firstName: "Test",
+        lastName: "User",
         email: "invalid",
         company: "Test Co",
         uid: "ATU12345678",
@@ -39,7 +40,8 @@ describe("contact.submit", () => {
 
     try {
       await caller.contact.submit({
-        name: "Test",
+        firstName: "Test",
+        lastName: "User",
         email: "test@example.com",
         company: "",
         uid: "ATU12345678",
@@ -66,7 +68,8 @@ describe("contact.submit", () => {
 
       try {
         const result = await caller.contact.submit({
-          name: "Test User",
+          firstName: "Test",
+          lastName: "User",
           email: `test-${Date.now()}@example.com`,
           company: "Test Company",
           uid: "ATU12345678",

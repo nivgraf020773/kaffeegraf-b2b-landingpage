@@ -2,20 +2,24 @@ import { describe, it, expect } from "vitest";
 import { processB2BAccessRequest, B2BAccessRequestSchema } from "./b2b-access";
 
 describe("B2B Access Request", () => {
-  it("should validate valid B2B access request", async () => {
-    const validRequest = {
-      companyName: "Test Company GmbH",
-      name: "Max Mustermann",
-      email: "max@example.com",
-      phone: "+43 1 234 56789",
-      uid: "ATU12345678",
-    };
+  it(
+    "should validate valid B2B access request",
+    async () => {
+      const validRequest = {
+        companyName: "Test Company GmbH",
+        name: "Max Mustermann",
+        email: `b2b-test-${Date.now()}@example.com`,
+        phone: "+43 1 234 56789",
+        uid: "ATU12345678",
+      };
 
-    const result = await processB2BAccessRequest(validRequest);
-    expect(result.success).toBe(true);
-    expect(result.requestId).toBeDefined();
-    expect(result.message).toContain("erfolgreich");
-  });
+      const result = await processB2BAccessRequest(validRequest);
+      expect(result.success).toBe(true);
+      expect(result.requestId).toBeDefined();
+      expect(result.message).toContain("erfolgreich");
+    },
+    { timeout: 30000 }
+  );
 
   it("should reject invalid UID format", async () => {
     const invalidRequest = {
