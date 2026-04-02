@@ -8,6 +8,7 @@ import { sendContactConfirmationEmail } from "./email";
 import { runAllDiagnostics } from "./woocommerce-diagnostic";
 import { runNonceInvestigation } from "./woocommerce-nonce-investigation";
 import { validateVAT } from "./vat-validation";
+import { processB2BAccessRequest } from "./b2b-access";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -43,6 +44,23 @@ export const appRouter = router({
       )
       .query(async ({ input }) => {
         return validateVAT(input.uid);
+      }),
+  }),
+
+  b2b: router({
+    accessRequest: publicProcedure
+      .input(
+        z.object({
+          companyName: z.string().min(2, "Firmenname erforderlich"),
+          name: z.string().min(2, "Name erforderlich"),
+          email: z.string().email("Gültige E-Mail erforderlich"),
+          phone: z.string().optional(),
+          uid: z.string()
+            .regex(/^ATU\d{8}$/, "UID muss ATU + 8 Ziffern sein"),
+        })
+      )
+      .mutation(async ({ input }) => {
+        return processB2BAccessRequest(input);
       }),
   }),
 
