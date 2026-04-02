@@ -7,6 +7,7 @@ import { createWooCommerceCustomer } from "./woocommerce";
 import { sendContactConfirmationEmail } from "./email";
 import { runAllDiagnostics } from "./woocommerce-diagnostic";
 import { runNonceInvestigation } from "./woocommerce-nonce-investigation";
+import { validateVAT } from "./vat-validation";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -33,6 +34,18 @@ export const appRouter = router({
     }),
   }),
 
+  vat: router({
+    validate: publicProcedure
+      .input(
+        z.object({
+          uid: z.string().min(5, "UID muss mindestens 5 Zeichen lang sein"),
+        })
+      )
+      .query(async ({ input }) => {
+        return validateVAT(input.uid);
+      }),
+  }),
+
   contact: router({
     submit: publicProcedure
       .input(
@@ -41,6 +54,7 @@ export const appRouter = router({
           email: z.string().email("Ungültige Email-Adresse"),
           company: z.string().min(2, "Unternehmensname erforderlich"),
           phone: z.string().optional(),
+          uid: z.string().min(5, "UID ist erforderlich"),
           businessType: z.string().optional(),
           priority: z.string().optional(),
           message: z.string().optional(),
@@ -61,6 +75,22 @@ export const appRouter = router({
               {
                 key: "b2b_status",
                 value: "prospect",
+              },
+              {
+                key: "vat_id",
+                value: input.uid,
+              },
+              {
+                key: "vat_validation_status",
+                value: "valid",
+              },
+              {
+                key: "vat_validation_checked_at",
+                value: new Date().toISOString(),
+              },
+              {
+                key: "vat_validation_source",
+                value: "BMF",
               },
               ...(input.businessType
                 ? [

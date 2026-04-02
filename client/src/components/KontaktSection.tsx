@@ -2,9 +2,10 @@
    Kontaktformular mit WooCommerce API Integration */
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, Globe, CheckCircle, AlertCircle } from "lucide-react";
+import { Mail, Globe, CheckCircle, AlertCircle, AlertTriangle } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import { normalizeVAT, validateVATFormat, getVATErrorMessage, getVATHelpText, getVATPlaceholder } from "@shared/vat-validation";
 
 export default function KontaktSection() {
   const ref = useRef(null);
@@ -16,10 +17,13 @@ export default function KontaktSection() {
     company: "",
     email: "",
     phone: "",
+    uid: "",
     businessType: "",
     priority: "",
     message: "",
   });
+  const [uidValidationStatus, setUidValidationStatus] = useState<"idle" | "validating" | "valid" | "invalid" | "error">("idle");
+  const [uidValidationMessage, setUidValidationMessage] = useState("");
 
   const businessTypeOptions = [
     { value: "buero", label: "Büro / Office (1–50 Mitarbeitende)" },
@@ -45,7 +49,56 @@ export default function KontaktSection() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+
+    if (name === "uid" && uidValidationStatus !== "idle") {
+      setUidValidationStatus("idle");
+      setUidValidationMessage("");
+    }
+  };
+
+  const handleUidBlur = async () => {
+    if (!form.uid.trim()) {
+      setUidValidationStatus("idle");
+      setUidValidationMessage("");
+      return;
+    }
+
+    const normalized = normalizeVAT(form.uid);
+    
+    if (!validateVATFormat(normalized)) {
+      setUidValidationStatus("invalid");
+      setUidValidationMessage(getVATErrorMessage("format_error"));
+      return;
+    }
+
+    setUidValidationStatus("validating");
+    try {
+      const params = new URLSearchParams();
+      params.append("input", JSON.stringify({ uid: normalized }));
+      
+      const response = await fetch(`/api/trpc/vat.validate?${params}`, {
+        method: "GET",
+        credentials: "include",
+      });
+      
+      const data = await response.json();
+      const result = data.result?.data;
+      
+      if (result?.status === "valid") {
+        setUidValidationStatus("valid");
+        setUidValidationMessage("UID ist gültig");
+        setForm({ ...form, uid: normalized });
+      } else {
+        setUidValidationStatus("invalid");
+        setUidValidationMessage(getVATErrorMessage(result?.status || "service_unavailable"));
+      }
+    } catch (error) {
+      setUidValidationStatus("error");
+      setUidValidationMessage(getVATErrorMessage("service_unavailable"));
+      console.error("[UID Validation Error]", error);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,11 +106,18 @@ export default function KontaktSection() {
     setIsLoading(true);
 
     try {
+      if (uidValidationStatus !== "valid") {
+        toast.error("Bitte prüfen Sie Ihre UID / Steuernummer.");
+        setIsLoading(false);
+        return;
+      }
+
       await contactMutation.mutateAsync({
         name: form.name,
         email: form.email,
         company: form.company,
         phone: form.phone,
+        uid: form.uid,
         businessType: form.businessType,
         priority: form.priority,
         message: form.message,
@@ -69,10 +129,13 @@ export default function KontaktSection() {
         company: "",
         email: "",
         phone: "",
+        uid: "",
         businessType: "",
         priority: "",
         message: "",
       });
+      setUidValidationStatus("idle");
+      setUidValidationMessage("");
 
       toast.success(
         "Vielen Dank! Wir melden uns innerhalb von 24 Stunden bei Ihnen."
@@ -279,6 +342,52 @@ export default function KontaktSection() {
                       className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
                     />
                   </div>
+                </div>
+
+                {/* UID / VAT Number Field */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block">
+                      UID / Steuernummer *
+                    </label>
+                    {uidValidationStatus === "validating" && (
+                      <span className="text-[9px] text-[#C9A84C] animate-pulse">Prüfung läuft...</span>
+                    )}
+                    {uidValidationStatus === "valid" && (
+                      <span className="text-[9px] text-green-500 flex items-center gap-1">
+                        <CheckCircle size={12} /> Gültig
+                      </span>
+                    )}
+                    {uidValidationStatus === "invalid" && (
+                      <span className="text-[9px] text-red-500 flex items-center gap-1">
+                        <AlertTriangle size={12} /> Ungültig
+                      </span>
+                    )}
+                  </div>
+                  <input
+                    type="text"
+                    name="uid"
+                    required
+                    value={form.uid}
+                    onChange={handleChange}
+                    onBlur={handleUidBlur}
+                    placeholder={getVATPlaceholder()}
+                    className={`w-full bg-[#0D0D0B] border text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none transition-colors placeholder:text-mokka/30 ${
+                      uidValidationStatus === "valid"
+                        ? "border-green-500/50 focus:border-green-500"
+                        : uidValidationStatus === "invalid"
+                          ? "border-red-500/50 focus:border-red-500"
+                          : "border-white/8 focus:border-[#C9A84C]/50"
+                    }`}
+                  />
+                  {uidValidationMessage && (
+                    <p className={`text-[11px] mt-2 ${
+                      uidValidationStatus === "valid" ? "text-green-400" : "text-red-400"
+                    }`}>
+                      {uidValidationMessage}
+                    </p>
+                  )}
+                  <p className="text-[10px] text-mokka/50 mt-1">{getVATHelpText()}</p>
                 </div>
 
                 {/* Dropdown 1: Business Type */}
