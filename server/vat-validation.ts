@@ -13,8 +13,14 @@ const VIES_TEST_ENDPOINT = "https://viesapi.eu/api-test/get/vies/euvat";
 
 // For testing, use the test API credentials
 // In production, these should come from environment variables
-const API_KEY_ID = process.env.VIES_API_KEY_ID || "test_id";
-const API_KEY = process.env.VIES_API_KEY || "test_key";
+const API_KEY_ID = process.env.VIES_API_KEY_ID || "";
+const API_KEY = process.env.VIES_API_KEY || "";
+
+if (!API_KEY_ID || !API_KEY) {
+  console.warn(
+    "[VIES API] Missing credentials. Set VIES_API_KEY_ID and VIES_API_KEY environment variables."
+  );
+}
 
 /**
  * Generate HMAC SHA256 Authorization header for VIES API
@@ -57,9 +63,8 @@ async function validateEUVAT(uid: string): Promise<VATValidationResult> {
   try {
     const normalized = uid.trim().toUpperCase().replace(/\s+/g, "");
 
-    // Determine if using test or production API
-    // For now, always use test API for safety
-    const isTestMode = true;
+    // Use production API with real credentials
+    const isTestMode = false;
     const baseEndpoint = isTestMode ? VIES_TEST_ENDPOINT : VIES_API_ENDPOINT;
     const path = isTestMode
       ? `/api-test/get/vies/euvat/${normalized}`
