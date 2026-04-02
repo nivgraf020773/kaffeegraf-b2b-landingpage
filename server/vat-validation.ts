@@ -1,103 +1,109 @@
 /**
  * VAT/UID Validation Service
- * Validates EU VAT numbers via VIES API and Austrian UID via BMF
+ * Validates EU VAT numbers via VIES REST API
+ * 
+ * Documentation: https://viesapi.eu/de/vies-rest-api-dokumentation/
  */
 
-import type { VATValidationResult, VATValidationStatus } from "@shared/vat-validation";
+import crypto from "crypto";
+import type { VATValidationResult } from "@shared/vat-validation";
 
-const VIES_API_ENDPOINT = "https://ec.europa.eu/taxation_customs/vies/services/checkVatService";
-const BMF_API_ENDPOINT = "https://finanzonline.bmf.gv.at/fonuid/ws/uidAbfrageService";
+const VIES_API_ENDPOINT = "https://viesapi.eu/api/get/vies/euvat";
+const VIES_TEST_ENDPOINT = "https://viesapi.eu/api-test/get/vies/euvat";
+
+// For testing, use the test API credentials
+// In production, these should come from environment variables
+const API_KEY_ID = process.env.VIES_API_KEY_ID || "test_id";
+const API_KEY = process.env.VIES_API_KEY || "test_key";
 
 /**
- * Validate Austrian UID via VIES API
- * Austrian UIDs (ATU...) can be validated using the EU VIES API
- * This avoids the need for FinanzOnline credentials
+ * Generate HMAC SHA256 Authorization header for VIES API
+ * 
+ * Format: MAC id="key_id", ts="timestamp", nonce="random", mac="base64_hmac"
  */
-async function validateAustrianUID(uid: string): Promise<VATValidationResult> {
-  // Route to VIES API - Austrian UIDs work with VIES
-  return validateEUVAT(uid);
+function generateHMACAuth(path: string): {
+  Authorization: string;
+  "User-Agent": string;
+  Accept: string;
+} {
+  const ts = Math.floor(Date.now() / 1000).toString();
+  const nonce = crypto.randomBytes(8).toString("hex").substring(0, 16);
+  const method = "GET";
+  const host = "viesapi.eu";
+  const port = "443";
+
+  // Build the string to sign
+  const stringToSign = `${ts}\n${nonce}\n${method}\n${path}\n${host}\n${port}\n\n`;
+
+  // Calculate HMAC SHA256
+  const hmac = crypto.createHmac("sha256", API_KEY);
+  hmac.update(stringToSign);
+  const macValue = hmac.digest("base64");
+
+  // Build Authorization header
+  const authHeader = `MAC id="${API_KEY_ID}", ts="${ts}", nonce="${nonce}", mac="${macValue}"`;
+
+  return {
+    Authorization: authHeader,
+    "User-Agent": "kaffeegraf-b2b-app/1.0",
+    Accept: "application/json",
+  };
 }
 
 /**
- * Validate EU VAT number via VIES API
+ * Validate EU VAT number via VIES REST API
  */
 async function validateEUVAT(uid: string): Promise<VATValidationResult> {
   try {
-    const countryCode = uid.substring(0, 2);
-    const vatNumber = uid.substring(2);
+    const normalized = uid.trim().toUpperCase().replace(/\s+/g, "");
 
-    // Build SOAP request for VIES API
-    const soapBody = `<?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="urn:ec.europa.eu:taxud:vies:services:checkVat:types_v2_1">
-  <soap:Body>
-    <tns:checkVat>
-      <tns:vatNumber>${vatNumber}</tns:vatNumber>
-      <tns:memberState>${countryCode}</tns:memberState>
-      <tns:requesterMemberState>AT</tns:requesterMemberState>
-      <tns:requesterVat>ATU81145618</tns:requesterVat>
-    </tns:checkVat>
-  </soap:Body>
-</soap:Envelope>`;
+    // Determine if using test or production API
+    // For now, always use test API for safety
+    const isTestMode = true;
+    const baseEndpoint = isTestMode ? VIES_TEST_ENDPOINT : VIES_API_ENDPOINT;
+    const path = isTestMode
+      ? `/api-test/get/vies/euvat/${normalized}`
+      : `/api/get/vies/euvat/${normalized}`;
+
+    const url = `${baseEndpoint}/${normalized}`;
+
+    // Generate HMAC authentication
+    const headers = generateHMACAuth(path);
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
-    const response = await fetch(VIES_API_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/xml; charset=UTF-8",
-        SOAPAction: "",
-      },
-      body: soapBody,
+    const response = await fetch(url, {
+      method: "GET",
+      headers,
       signal: controller.signal,
     });
 
     clearTimeout(timeoutId);
 
+    // Check for HTTP errors
     if (!response.ok) {
-      return {
-        status: "service_unavailable",
-        uid,
-        normalized: uid,
-        message: "VIES-Service antwortet nicht korrekt",
-        source: "VIES",
-      };
-    }
+      console.error(`[VIES API Error] Status: ${response.status}`, {
+        uid: normalized,
+        status: response.status,
+        statusText: response.statusText,
+      });
 
-    const xmlText = await response.text();
-
-    // Parse SOAP response
-    if (xmlText.includes("<valid>true</valid>")) {
-      return {
-        status: "valid",
-        uid,
-        normalized: uid,
-        message: "VAT-Nummer ist gültig",
-        timestamp: new Date().toISOString(),
-        source: "VIES",
-      };
-    }
-
-    if (xmlText.includes("<valid>false</valid>")) {
-      return {
-        status: "invalid",
-        uid,
-        normalized: uid,
-        message: "VAT-Nummer konnte nicht bestätigt werden",
-        source: "VIES",
-      };
-    }
-
-    // Check for SOAP fault
-    if (xmlText.includes("faultstring")) {
-      const faultMatch = xmlText.match(/<faultstring>(.*?)<\/faultstring>/);
-      const faultMessage = faultMatch ? faultMatch[1] : "VIES-Service Fehler";
-
-      if (faultMessage.includes("SERVICE_UNAVAILABLE")) {
+      if (response.status === 429) {
         return {
           status: "service_unavailable",
           uid,
-          normalized: uid,
+          normalized,
+          message: "VIES-Service ist überlastet. Bitte versuchen Sie es später erneut.",
+          source: "VIES",
+        };
+      }
+
+      if (response.status >= 500) {
+        return {
+          status: "service_unavailable",
+          uid,
+          normalized,
           message: "VIES-Service ist derzeit nicht verfügbar",
           source: "VIES",
         };
@@ -106,8 +112,38 @@ async function validateEUVAT(uid: string): Promise<VATValidationResult> {
       return {
         status: "service_unavailable",
         uid,
-        normalized: uid,
-        message: faultMessage,
+        normalized,
+        message: "VIES-Service konnte nicht erreicht werden",
+        source: "VIES",
+      };
+    }
+
+    const data = await response.json() as {
+      valid?: boolean;
+      vat?: string;
+      name?: string;
+      address?: string;
+      requestDate?: string;
+    };
+
+    // Parse response
+    if (data.valid === true) {
+      return {
+        status: "valid",
+        uid,
+        normalized,
+        message: "VAT-Nummer ist gültig",
+        timestamp: new Date().toISOString(),
+        source: "VIES",
+      };
+    }
+
+    if (data.valid === false) {
+      return {
+        status: "invalid",
+        uid,
+        normalized,
+        message: "VAT-Nummer konnte nicht bestätigt werden",
         source: "VIES",
       };
     }
@@ -115,26 +151,27 @@ async function validateEUVAT(uid: string): Promise<VATValidationResult> {
     return {
       status: "service_unavailable",
       uid,
-      normalized: uid,
-      message: "VIES-Service konnte nicht verarbeitet werden",
+      normalized,
+      message: "VIES-Service konnte die Anfrage nicht verarbeiten",
       source: "VIES",
     };
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") {
+      console.warn("[VIES API Timeout]", { uid });
       return {
         status: "timeout",
         uid,
-        normalized: uid,
+        normalized: uid.toUpperCase(),
         message: "VIES-Service Anfrage hat zu lange gedauert",
         source: "VIES",
       };
     }
 
-    console.error("[VIES Validation Error]", error);
+    console.error("[VIES API Exception]", error);
     return {
       status: "service_unavailable",
       uid,
-      normalized: uid,
+      normalized: uid.toUpperCase(),
       message: "VIES-Service ist nicht verfügbar",
       source: "VIES",
     };
@@ -171,7 +208,7 @@ export async function validateVAT(uid: string): Promise<VATValidationResult> {
         message: "Österreichische UID muss ATU + 8 Ziffern sein",
       };
     }
-    return validateAustrianUID(normalized);
+    return validateEUVAT(normalized);
   }
 
   // EU VAT: 2 letters + 2-12 alphanumeric
