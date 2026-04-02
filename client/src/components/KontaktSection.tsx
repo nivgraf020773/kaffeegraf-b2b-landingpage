@@ -16,6 +16,7 @@ export default function KontaktSection() {
     company: "",
     email: "",
     phone: "",
+    uid: "",
     businessType: "",
     priority: "",
     message: "",
@@ -58,6 +59,7 @@ export default function KontaktSection() {
         email: form.email,
         company: form.company,
         phone: form.phone,
+        uid: form.uid,
         businessType: form.businessType,
         priority: form.priority,
         message: form.message,
@@ -69,6 +71,7 @@ export default function KontaktSection() {
         company: "",
         email: "",
         phone: "",
+        uid: "",
         businessType: "",
         priority: "",
         message: "",
@@ -251,6 +254,24 @@ export default function KontaktSection() {
                   </div>
                 </div>
 
+                <div>
+                  <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
+                    UID / Steuernummer *
+                  </label>
+                  <input
+                    type="text"
+                    name="uid"
+                    required
+                    value={form.uid}
+                    onChange={handleChange}
+                    placeholder="ATU12345678"
+                    className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                  />
+                  <p className="font-['Figtree'] text-mokka text-xs mt-1">
+                    Format: ATU + 8 Ziffern (z.B. ATU12345678)
+                  </p>
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
@@ -337,26 +358,26 @@ export default function KontaktSection() {
                 {/* Message */}
                 <div>
                   <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                    Nachricht
+                    Nachricht (optional)
                   </label>
                   <textarea
                     name="message"
                     value={form.message}
                     onChange={handleChange}
                     placeholder="Erzählen Sie uns mehr über Ihre Anforderungen..."
-                    rows={4}
+                    rows={3}
                     className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30 resize-none"
                   />
                 </div>
 
                 {/* Submit Button */}
-                <button
+                <motion.button
                   type="submit"
                   disabled={isLoading}
                   className="w-full bg-[#C9A84C] text-[#0D0D0B] font-['Poppins'] font-semibold py-3 px-6 hover:bg-[#D4B85F] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? "Wird verarbeitet..." : "Verkostung anfragen"}
-                </button>
+                </motion.button>
 
                 <p className="font-['Figtree'] text-[11px] text-mokka/60 text-center">
                   Ihre Daten werden sicher verarbeitet und nicht an Dritte
