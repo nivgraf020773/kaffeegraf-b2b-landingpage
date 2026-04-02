@@ -262,13 +262,16 @@ export default function KontaktSection() {
                     type="text"
                     name="uid"
                     required
+                    maxLength={11}
+                    pattern="ATU\d{8}"
                     value={form.uid}
                     onChange={handleChange}
                     placeholder="ATU12345678"
                     className="w-full bg-[#0D0D0B] border border-white/8 text-cream font-['Figtree'] text-sm px-4 py-3 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30"
+                    title="UID muss ATU + genau 8 Ziffern sein (z.B. ATU12345678)"
                   />
                   <p className="font-['Figtree'] text-mokka text-xs mt-1">
-                    Format: ATU + 8 Ziffern (z.B. ATU12345678)
+                    Format: ATU + genau 8 Ziffern (z.B. ATU12345678)
                   </p>
                 </div>
 
