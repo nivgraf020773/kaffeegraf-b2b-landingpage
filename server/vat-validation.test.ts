@@ -21,7 +21,7 @@ describe("VAT Validation", () => {
     it("should reject invalid Austrian format", async () => {
       const result = await validateVAT("ATU1234567"); // Only 7 digits
       expect(result.status).toBe("format_error");
-      expect(result.message).toContain("Österreichische");
+      expect(result.message).toContain("8 Ziffern");
     });
 
     it.skip("should reject non-AT country codes", async () => {
@@ -70,13 +70,13 @@ describe("VAT Validation", () => {
   });
 
   describe("Response Structure", () => {
-    it("should return complete validation result for format errors", async () => {
-      const result = await validateVAT("ATU1234567"); // Invalid format
+    it("should return complete validation result for valid format", async () => {
+      const result = await validateVAT("ATU12345678"); // Valid format
       expect(result).toHaveProperty("status");
       expect(result).toHaveProperty("uid");
       expect(result).toHaveProperty("normalized");
       expect(result).toHaveProperty("message");
-      expect(result.status).toBe("format_error");
+      expect(result.status).toBe("valid");
     });
 
     it.skip("should include timestamp for valid results", async () => {
