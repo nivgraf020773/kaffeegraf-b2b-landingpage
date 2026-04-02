@@ -9,134 +9,13 @@ const VIES_API_ENDPOINT = "https://ec.europa.eu/taxation_customs/vies/services/c
 const BMF_API_ENDPOINT = "https://finanzonline.bmf.gv.at/fonuid/ws/uidAbfrageService";
 
 /**
- * Validate Austrian UID via BMF (Bundeszentralamt für Steuern)
- * Uses the official BMF SOAP API: finanzonline.bmf.gv.at
+ * Validate Austrian UID via VIES API
+ * Austrian UIDs (ATU...) can be validated using the EU VIES API
+ * This avoids the need for FinanzOnline credentials
  */
 async function validateAustrianUID(uid: string): Promise<VATValidationResult> {
-  try {
-    const countryCode = uid.substring(0, 2);
-    const vatNumber = uid.substring(2);
-
-    if (countryCode !== "AT") {
-      return {
-        status: "format_error",
-        uid,
-        normalized: uid,
-        message: "Ungültiges Länderformat",
-        source: "BMF",
-      };
-    }
-
-    // Build SOAP request for BMF API
-    const soapBody = `<?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://finanzonline.bmf.gv.at/">
-  <soap:Body>
-    <tns:UIDAbfrage>
-      <tns:uid>${vatNumber}</tns:uid>
-    </tns:UIDAbfrage>
-  </soap:Body>
-</soap:Envelope>`;
-
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-
-    const response = await fetch(BMF_API_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/xml; charset=UTF-8",
-        SOAPAction: "http://finanzonline.bmf.gv.at/UIDAbfrage",
-      },
-      body: soapBody,
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      return {
-        status: "service_unavailable",
-        uid,
-        normalized: uid,
-        message: "BMF-Service antwortet nicht korrekt",
-        source: "BMF",
-      };
-    }
-
-    const xmlText = await response.text();
-
-    // Parse SOAP response - check for valid/invalid status
-    if (xmlText.includes("<Gueltig>true</Gueltig>") || xmlText.includes("<gueltig>true</gueltig>")) {
-      return {
-        status: "valid",
-        uid,
-        normalized: uid,
-        message: "UID ist gültig",
-        timestamp: new Date().toISOString(),
-        source: "BMF",
-      };
-    }
-
-    if (xmlText.includes("<Gueltig>false</Gueltig>") || xmlText.includes("<gueltig>false</gueltig>")) {
-      return {
-        status: "invalid",
-        uid,
-        normalized: uid,
-        message: "UID konnte nicht bestätigt werden",
-        source: "BMF",
-      };
-    }
-
-    // Check for SOAP fault
-    if (xmlText.includes("faultstring")) {
-      const faultMatch = xmlText.match(/<faultstring>(.*?)<\/faultstring>/);
-      const faultMessage = faultMatch ? faultMatch[1] : "BMF-Service Fehler";
-
-      if (faultMessage.includes("SERVICE_UNAVAILABLE") || faultMessage.includes("timeout")) {
-        return {
-          status: "service_unavailable",
-          uid,
-          normalized: uid,
-          message: "BMF-Service ist derzeit nicht verfügbar",
-          source: "BMF",
-        };
-      }
-
-      return {
-        status: "service_unavailable",
-        uid,
-        normalized: uid,
-        message: faultMessage,
-        source: "BMF",
-      };
-    }
-
-    return {
-      status: "service_unavailable",
-      uid,
-      normalized: uid,
-      message: "BMF-Service konnte nicht verarbeitet werden",
-      source: "BMF",
-    };
-  } catch (error) {
-    if (error instanceof Error && error.name === "AbortError") {
-      return {
-        status: "timeout",
-        uid,
-        normalized: uid,
-        message: "BMF-Service Anfrage hat zu lange gedauert",
-        source: "BMF",
-      };
-    }
-
-    console.error("[BMF Validation Error]", error);
-    return {
-      status: "service_unavailable",
-      uid,
-      normalized: uid,
-      message: "BMF-Service ist nicht verfügbar",
-      source: "BMF",
-    };
-  }
+  // Route to VIES API - Austrian UIDs work with VIES
+  return validateEUVAT(uid);
 }
 
 /**
@@ -267,10 +146,10 @@ async function validateEUVAT(uid: string): Promise<VATValidationResult> {
  * Routes to appropriate validation service based on country code
  */
 export async function validateVAT(uid: string): Promise<VATValidationResult> {
-  const normalized = uid.trim().toUpperCase();
+  const normalized = uid.trim().toUpperCase().replace(/\s+/g, "");
 
-  // Validate format
-  if (!normalized.match(/^[A-Z]{2}[A-Z0-9]{2,12}$/)) {
+  // Must start with 2 letters
+  if (!normalized.match(/^[A-Z]{2}/)) {
     return {
       status: "format_error",
       uid,
@@ -280,10 +159,29 @@ export async function validateVAT(uid: string): Promise<VATValidationResult> {
   }
 
   const countryCode = normalized.substring(0, 2);
+  const vatNumber = normalized.substring(2);
 
-  // Route to appropriate validator
+  // Austrian UID: ATU + 8 digits
   if (countryCode === "AT") {
+    if (!/^\d{8}$/.test(vatNumber)) {
+      return {
+        status: "format_error",
+        uid,
+        normalized,
+        message: "Österreichische UID muss ATU + 8 Ziffern sein",
+      };
+    }
     return validateAustrianUID(normalized);
+  }
+
+  // EU VAT: 2 letters + 2-12 alphanumeric
+  if (!/^[A-Z0-9]{2,12}$/.test(vatNumber)) {
+    return {
+      status: "format_error",
+      uid,
+      normalized,
+      message: "Ungültiges EU VAT-Format",
+    };
   }
 
   // For all other EU countries, use VIES

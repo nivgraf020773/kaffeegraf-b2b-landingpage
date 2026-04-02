@@ -94,14 +94,14 @@ WooCommerce
 
 ---
 
-## Phase 3: B2B UID/VAT Validation (IN PROGRESS)
+## Phase 3: B2B UID/VAT Validation (COMPLETED)
 
 ### UID/Steuernummern-Prüfung
-- [ ] Frontend-Formularfeld für UID/Steuernummer hinzufügen
-- [ ] Frontend-Vorprüfung (Format, Normalisierung)
-- [ ] Serverseitige UID-Validierung gegen externe APIs (VIES/BMF)
-- [ ] Error Handling für alle Validierungszustände
-- [ ] WooCommerce Custom Fields für UID-Speicherung
+- [x] Frontend-Formularfeld für UID/Steuernummer hinzufügen
+- [x] Frontend-Vorprüfung (Format, Normalisierung)
+- [x] Serverseitige UID-Validierung gegen externe APIs (VIES/BMF)
+- [x] Error Handling für alle Validierungszustände
+- [x] WooCommerce Custom Fields für UID-Speicherung
 - [ ] Landingpage mit B2B-Hinweis aktualisieren
-- [ ] Tests für UID-Validierung
-- [ ] Dokumentation der Validierungslogik
+- [x] Tests für UID-Validierung
+- [x] Dokumentation der Validierungslogik

@@ -344,6 +344,13 @@ export default function KontaktSection() {
                   </div>
                 </div>
 
+                {/* B2B UID Requirement Info */}
+                <div className="bg-[#C9A84C]/5 border border-[#C9A84C]/20 p-3 rounded mb-5">
+                  <p className="text-[10px] text-mokka font-['Figtree']">
+                    <span className="text-[#C9A84C] font-semibold">B2B Anfrage:</span> Bitte geben Sie Ihre Umsatzsteuer-ID (UID) oder Steuernummer ein. Diese wird automatisch validiert.
+                  </p>
+                </div>
+
                 {/* UID / VAT Number Field */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
