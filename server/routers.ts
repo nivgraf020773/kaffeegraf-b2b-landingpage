@@ -90,7 +90,7 @@ export const appRouter = router({
               },
               {
                 key: "vat_validation_source",
-                value: "BMF",
+                value: "FORMAT_CHECK",
               },
               ...(input.businessType
                 ? [

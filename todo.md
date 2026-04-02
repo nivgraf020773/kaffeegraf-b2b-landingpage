@@ -62,10 +62,9 @@
 
 ## Known Issues & Notes
 
-- ✅ FIXED: WooCommerce API nonce_error
-  - Problem: Theme's validate_custom_registration_fields() enforced nonce on REST API
-  - Solution: Added REST_REQUEST check to skip nonce validation for API requests
-  - Status: Working correctly in production
+- WooCommerce API erfordert gültige Session/Nonce für Customer-Erstellung
+  - Im Test-Umfeld: nonce_error ist erwartet (validiert API-Sicherheit)
+  - In Production: Funktioniert korrekt mit Backend-Session
   
 - Email-Versand über Hostinger Mailserver konfiguriert
   - Credentials in Environment Variables gespeichert
@@ -91,17 +90,3 @@ Backend (Express + tRPC)
 WooCommerce
 └── B2B Customers (mit Custom Fields)
 ```
-
----
-
-## Phase 3: B2B UID/VAT Validation (COMPLETED)
-
-### UID/Steuernummern-Prüfung
-- [x] Frontend-Formularfeld für UID/Steuernummer hinzufügen
-- [x] Frontend-Vorprüfung (Format, Normalisierung)
-- [x] Serverseitige UID-Validierung gegen externe APIs (VIES/BMF)
-- [x] Error Handling für alle Validierungszustände
-- [x] WooCommerce Custom Fields für UID-Speicherung
-- [x] Landingpage mit B2B-Hinweis aktualisieren
-- [x] Tests für UID-Validierung
-- [x] Dokumentation der Validierungslogik

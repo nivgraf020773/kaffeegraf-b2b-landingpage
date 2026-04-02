@@ -84,7 +84,7 @@ export default function HeroSection() {
                 }}
                 className="bg-[#C9A84C] hover:bg-[#B39A3D] text-[#0D0D0B] px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
               >
-                Jetzt Kaffee verkosten
+                Kaffee bei Ihnen verkosten
               </Button>
               <Button
                 onClick={() => {
@@ -94,7 +94,7 @@ export default function HeroSection() {
                 variant="outline"
                 className="border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-[#0D0D0B] px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
               >
-                B2B-Kunden Login
+                B2B-Zugang
               </Button>
             </motion.div>
 
@@ -115,7 +115,7 @@ export default function HeroSection() {
                     {item.value}
                   </div>
                   <div className="font-['Figtree'] text-xs text-[#D4C5B0] uppercase tracking-wider mt-1">
-                    Persönliche
+                    {item.label}
                   </div>
                 </div>
               ))}

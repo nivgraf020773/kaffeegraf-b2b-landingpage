@@ -1,19 +1,15 @@
 /**
- * VAT/UID Validation Service
+ * Simple VAT/UID Validation Service
  * 
- * CURRENT: Simple format validation (ATU + 8 digits)
- * TODO: Integrate with VIES REST API when service is stable
+ * Current implementation: Basic format validation only
+ * - Checks if UID starts with ATU
+ * - Checks if followed by exactly 8 digits
+ * 
+ * No external API calls - purely local validation
  */
 
 import type { VATValidationResult } from "@shared/vat-validation";
 
-/**
- * Simple format validation for Austrian UID
- * Checks: ATU + exactly 8 digits
- * 
- * This is a temporary implementation for MVP.
- * Real VIES API validation will be added later.
- */
 export async function validateVAT(uid: string): Promise<VATValidationResult> {
   const normalized = uid.trim().toUpperCase().replace(/\s+/g, "");
 
@@ -49,25 +45,8 @@ export async function validateVAT(uid: string): Promise<VATValidationResult> {
   };
 }
 
-/**
- * Batch validate multiple VAT numbers
- */
 export async function validateVATBatch(
   uids: string[]
 ): Promise<VATValidationResult[]> {
   return Promise.all(uids.map((uid) => validateVAT(uid)));
 }
-
-/**
- * TODO: VIES REST API Integration
- * 
- * When VIES API is working properly, replace the simple validation above with:
- * 
- * 1. Generate HMAC SHA256 Authorization header
- * 2. Make GET request to: https://viesapi.eu/api/get/vies/euvat/{UID}
- * 3. Parse JSON response
- * 4. Return validation result
- * 
- * Documentation: https://viesapi.eu/de/vies-rest-api-dokumentation/
- * Credentials: VIES_API_KEY_ID, VIES_API_KEY (from env)
- */
