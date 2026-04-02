@@ -88,13 +88,22 @@ export default function HeroSection() {
               </Button>
               <Button
                 onClick={() => {
-                  const el = document.querySelector("#existing-customers");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                  window.location.href = "#b2b-access-request";
                 }}
                 variant="outline"
                 className="border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-[#0D0D0B] px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
               >
-                B2B-Zugang
+                B2B-Zugang beantragen
+              </Button>
+              <Button
+                onClick={() => {
+                  const el = document.querySelector("#existing-customers");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                variant="outline"
+                className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
+              >
+                B2B Login
               </Button>
             </motion.div>
 
