@@ -34,7 +34,7 @@ async function validateEUVAT(uid: string): Promise<VATValidationResult> {
       <tns:vatNumber>${vatNumber}</tns:vatNumber>
       <tns:memberState>${countryCode}</tns:memberState>
       <tns:requesterMemberState>AT</tns:requesterMemberState>
-      <tns:requesterVat>ATU12345678</tns:requesterVat>
+      <tns:requesterVat>ATU81145618</tns:requesterVat>
     </tns:checkVat>
   </soap:Body>
 </soap:Envelope>`;
