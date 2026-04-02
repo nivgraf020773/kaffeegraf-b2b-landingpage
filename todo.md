@@ -102,6 +102,6 @@ WooCommerce
 - [x] Serverseitige UID-Validierung gegen externe APIs (VIES/BMF)
 - [x] Error Handling für alle Validierungszustände
 - [x] WooCommerce Custom Fields für UID-Speicherung
-- [ ] Landingpage mit B2B-Hinweis aktualisieren
+- [x] Landingpage mit B2B-Hinweis aktualisieren
 - [x] Tests für UID-Validierung
 - [x] Dokumentation der Validierungslogik
