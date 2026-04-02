@@ -3,6 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
+import { validateB2BCredentials, generateSessionToken } from "./b2b-auth";
 import { createWooCommerceCustomer } from "./woocommerce";
 import { sendContactConfirmationEmail } from "./email";
 import { runAllDiagnostics } from "./woocommerce-diagnostic";
@@ -48,6 +49,46 @@ export const appRouter = router({
   }),
 
   b2b: router({
+    login: publicProcedure
+      .input(
+        z.object({
+          identifier: z.string().min(1, "Kundennummer oder E-Mail erforderlich"),
+          password: z.string().min(1, "Passwort erforderlich"),
+          type: z.enum(["email", "customerNumber"]),
+        })
+      )
+      .mutation(async ({ input }) => {
+        try {
+          // Validate against WooCommerce
+          const customer = await validateB2BCredentials(input.identifier, input.password, input.type);
+          
+          if (!customer) {
+            return {
+              success: false,
+              message: "Kundennummer/E-Mail oder Passwort ungültig",
+            };
+          }
+
+          // Generate session token (optional - could use JWT)
+          const token = generateSessionToken(customer.id);
+
+          return {
+            success: true,
+            token,
+            customerId: customer.id,
+            customerNumber: customer.meta_data?.find((m: any) => m.key === "b2b_customer_number")?.value,
+            dashboardUrl: "https://kaffeebizdash-fqjhwufg.manus.space/dashboard",
+            message: "Erfolgreich angemeldet",
+          };
+        } catch (error) {
+          console.error("B2B Login Error:", error);
+          return {
+            success: false,
+            message: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+          };
+        }
+      }),
+
     accessRequest: publicProcedure
       .input(
         z.object({

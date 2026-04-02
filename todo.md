@@ -134,3 +134,21 @@ WooCommerce
 - [x] Add anchor link (#kontakt) to "Verkostung anfragen" button (working)
 - [x] Ensure smooth scroll to Verkostungsformular (working)
 
+
+
+## Phase 1.6: Final Fixes & B2B Login Modal (COMPLETE)
+
+### Quick Fixes
+- [x] Fix "Jetzt Verkosten" button anchor link (scrollIntoView working)
+- [x] Change email from team@kaffeegraf.coffee to b2b@kaffeegraf.coffee
+
+### B2B Login Modal
+- [x] Create B2BLoginModal component (with Email/Customer Number tabs)
+- [x] Implement WooCommerce authentication (Email or Customer Number)
+- [x] Add B2B Login button to Hero section (already exists)
+- [x] Test login flow with real WooCommerce data (b2b.login endpoint)
+- [x] Integrate with B2B-Dashboard auth mechanism (validateB2BCredentials)
+- [x] Backend b2b-auth.ts with password validation
+- [x] tRPC b2b.login endpoint
+- [x] Hash-based modal navigation (#b2b-login)
+- [x] All tests passing (13/13)

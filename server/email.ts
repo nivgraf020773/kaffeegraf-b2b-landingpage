@@ -51,7 +51,7 @@ export async function sendContactConfirmationEmail(
 ): Promise<void> {
   try {
     const transporter = getTransporter();
-    const mailFrom = process.env.MAIL_FROM || "team@kaffeegraf.coffee";
+    const mailFrom = process.env.MAIL_FROM || "b2b@kaffeegraf.coffee";
 
     // Email to customer
     await transporter.sendMail({
