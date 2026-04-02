@@ -15,7 +15,8 @@ export default function B2BAccessRequestModal({
 }: B2BAccessRequestModalProps) {
   const [form, setForm] = useState({
     companyName: "",
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     uid: "",
@@ -51,9 +52,12 @@ export default function B2BAccessRequestModal({
     setIsLoading(true);
 
     try {
+      // Combine firstName and lastName for the name field in b2b.accessRequest
+      const fullName = `${form.firstName} ${form.lastName}`.trim();
+      
       await b2bAccessMutation.mutateAsync({
         companyName: form.companyName,
-        name: form.name,
+        name: fullName,
         email: form.email,
         phone: form.phone,
         uid: form.uid.toUpperCase(),
@@ -63,7 +67,7 @@ export default function B2BAccessRequestModal({
       setTimeout(() => {
         onClose();
         setSubmitted(false);
-        setForm({ companyName: "", name: "", email: "", phone: "", uid: "" });
+        setForm({ companyName: "", firstName: "", lastName: "", email: "", phone: "", uid: "" });
       }, 3000);
     } catch (err) {
       const errorMessage =
@@ -131,18 +135,34 @@ export default function B2BAccessRequestModal({
                     />
                   </div>
 
-                  {/* Name */}
+                  {/* First Name */}
                   <div>
                     <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
-                      Name *
+                      Vorname *
                     </label>
                     <input
                       type="text"
-                      name="name"
+                      name="firstName"
                       required
-                      value={form.name}
+                      value={form.firstName}
                       onChange={handleChange}
-                      placeholder="Ihr Name"
+                      placeholder="Max"
+                      className="w-full bg-[#1A1A18] border border-white/8 text-cream font-['Figtree'] text-sm px-3 py-2 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30 rounded"
+                    />
+                  </div>
+
+                  {/* Last Name */}
+                  <div>
+                    <label className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka block mb-2">
+                      Nachname *
+                    </label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      required
+                      value={form.lastName}
+                      onChange={handleChange}
+                      placeholder="Mustermann"
                       className="w-full bg-[#1A1A18] border border-white/8 text-cream font-['Figtree'] text-sm px-3 py-2 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-mokka/30 rounded"
                     />
                   </div>
