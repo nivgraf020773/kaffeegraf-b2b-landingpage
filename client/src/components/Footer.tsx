@@ -96,7 +96,7 @@ export default function Footer() {
             <div className="flex flex-wrap justify-center gap-4 md:gap-6">
               {[
                 { label: "Impressum", href: "https://kaffeegraf.coffee/impressum" },
-                { label: "Datenschutz", href: "https://kaffeegraf.coffee/datenschutz" },
+                { label: "Datenschutz", href: "https://kaffeegraf.coffee/datenschutzerklaerung/" },
                 { label: "AGB", href: "https://kaffeegraf.coffee/agb" },
                 { label: "Cookie-Einstellungen", href: "#" },
               ].map((link) => (
