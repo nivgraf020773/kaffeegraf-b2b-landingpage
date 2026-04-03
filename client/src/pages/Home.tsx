@@ -14,6 +14,8 @@ import NachhaltigkeitSection from "@/components/NachhaltigkeitSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import KontaktSection from "@/components/KontaktSection";
 import Footer from "@/components/Footer";
+import LegalFooter from "@/components/LegalFooter";
+import CookieConsentBanner from "@/components/CookieConsentBanner";
 import B2BAccessRequestModal from "@/components/B2BAccessRequestModal";
 import B2BLoginModal from "@/components/B2BLoginModal";
 
@@ -53,7 +55,9 @@ export default function Home() {
       <NachhaltigkeitSection />
       <TestimonialsSection />
       <KontaktSection />
+      <LegalFooter />
       <Footer />
+      <CookieConsentBanner />
       <B2BAccessRequestModal
         isOpen={isB2BModalOpen}
         onClose={() => {

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
+import DSGVOConsent from "./DSGVOConsent";
 
 interface B2BAccessRequestModalProps {
   isOpen: boolean;
@@ -224,6 +225,9 @@ export default function B2BAccessRequestModal({
                       {error}
                     </div>
                   )}
+
+                  {/* DSGVO Consent */}
+                  <DSGVOConsent className="mt-4 mb-4" />
 
                   {/* Submit button */}
                   <Button

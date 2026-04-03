@@ -251,3 +251,48 @@ WooCommerce
 - [x] Verify visual hierarchy and premium look
 - [x] Test all CTA buttons and links functionality
 - [x] Verify navigation items unchanged
+
+
+## Phase 3: Legal Compliance & GDPR (STEP A COMPLETE)
+
+### Step A: Legal Footer & DSGVO Consent (COMPLETE)
+- [x] Create LegalFooter component with links:
+  - [x] Impressum: https://kaffeegraf.coffee/impressum/
+  - [x] Datenschutz: https://kaffeegraf.coffee/datenschutzerklaerung/
+  - [x] AGB: https://kaffeegraf.coffee/agb/
+  - [x] Cookie-Einstellungen: Link to cookie banner
+- [x] Create DSGVOConsent component with:
+  - [x] DSGVO consent text under ALL forms
+  - [x] Clickable "Datenschutzerklärung" link
+  - [x] Optional: Checkbox for acceptance
+- [x] Integrate LegalFooter into Home.tsx
+- [x] Integrate DSGVOConsent under:
+  - [x] Verkostungsformular (KontaktSection)
+  - [x] B2B Access Request Modal
+- [x] Fix: Change team@kaffeegraf.coffee to b2b@kaffeegraf.coffee in footer (already done in Phase 1.6)
+- [x] Build & test (no new TypeScript errors)
+- [x] Take screenshots (desktop + mobile)
+- [x] Commit and checkpoint
+
+### Step B: GDPR-Compliant Cookie Consent Banner
+- [ ] Create CookieConsentBanner component
+- [ ] Implement cookie consent state (localStorage)
+- [ ] Add Meta Pixel script control (only load after consent)
+- [ ] Add Google Analytics script control (only load after consent)
+- [ ] Banner UI: Minimal, clean, premium look
+- [ ] Accept/Reject buttons
+- [ ] "Cookie-Einstellungen" link to detailed settings
+- [ ] Test tracking scripts don't load without consent
+- [ ] Verify consent state persists across page reloads
+- [ ] Build & test
+- [ ] Commit and checkpoint
+
+### Step C: Final Validation & Deployment
+- [ ] All tests passing (should remain 13/13)
+- [ ] Build production bundle
+- [ ] Test on staging/Hostinger
+- [ ] Verify all legal links work
+- [ ] Verify DSGVO text visible on all forms
+- [ ] Verify cookie banner blocks tracking
+- [ ] Take final screenshots
+- [ ] Deploy to Hostinger production

@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { Mail, Globe, CheckCircle, AlertCircle } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import DSGVOConsent from "./DSGVOConsent";
 
 export default function KontaktSection() {
   const ref = useRef(null);
@@ -399,6 +400,9 @@ export default function KontaktSection() {
                 >
                   {isLoading ? "Wird verarbeitet..." : "Verkostung anfragen"}
                 </button>
+
+                {/* DSGVO Consent */}
+                <DSGVOConsent />
               </form>
             )}
           </motion.div>
