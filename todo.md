@@ -152,3 +152,71 @@ WooCommerce
 - [x] tRPC b2b.login endpoint
 - [x] Hash-based modal navigation (#b2b-login)
 - [x] All tests passing (13/13)
+
+
+## Phase 1.7: Pre-Production Security & Reliability Checks
+
+### Rate Limiting
+- [ ] Implement rate limiting middleware for Express
+- [ ] Rate limit: b2b.login (5 attempts/15min)
+- [ ] Rate limit: contact.submit (3 attempts/hour)
+- [ ] Rate limit: b2b.accessRequest (3 attempts/hour)
+- [ ] Rate limit: auth endpoints (5 attempts/15min)
+- [ ] Add rate limit headers to responses
+
+### Secrets & Environment Validation
+- [ ] Verify all PROD secrets in Hostinger
+- [ ] Ensure no DEV secrets in PROD env
+- [ ] Check .env.example doesn't contain real keys
+- [ ] Verify .env is in .gitignore
+- [ ] Validate WOOCOMMERCE_* keys are correct
+- [ ] Validate EMAIL_* config (MAIL_HOST, MAIL_PORT, etc)
+- [ ] Verify DATABASE_URL points to correct DB
+- [ ] Ensure JWT_SECRET is strong and unique
+
+### WooCommerce API Hardening
+- [ ] Set request timeouts (5s for API calls)
+- [ ] Implement exponential backoff retry (max 3 attempts)
+- [ ] Only retry on 5xx/timeout, not 4xx
+- [ ] Add comprehensive error logging
+- [ ] Map WooCommerce error codes to user messages
+- [ ] Handle 429 (rate limit) from WooCommerce
+- [ ] Handle connection timeouts gracefully
+- [ ] Test WooCommerce down scenario
+
+### Edge Case Testing
+- [ ] Test WooCommerce API down
+- [ ] Test WooCommerce API slow (>10s response)
+- [ ] Test database connection failure
+- [ ] Test email service failure
+- [ ] Test duplicate form submissions
+- [ ] Test session expiration during form submit
+- [ ] Test invalid/malformed inputs
+- [ ] Test network interruption during API call
+
+### Security Review
+- [ ] Verify CSRF protection on state-changing requests
+- [ ] Check for unescaped HTML rendering
+- [ ] Verify no raw SQL queries
+- [ ] Check for XSS vulnerabilities in user inputs
+- [ ] Verify authentication on protected endpoints
+- [ ] Check for sensitive data in logs
+- [ ] Verify API keys not exposed in frontend
+
+### Logging Setup
+- [ ] Setup error logging for server errors
+- [ ] Log all WooCommerce API errors
+- [ ] Log authentication failures
+- [ ] Log form submission errors
+- [ ] Setup log rotation
+- [ ] Ensure logs don't contain sensitive data
+- [ ] Test log output in production
+
+### Final Pre-Deployment
+- [ ] Run all tests (should be 13/13 passing)
+- [ ] Build production bundle
+- [ ] Verify bundle size acceptable
+- [ ] Test on staging/Hostinger
+- [ ] Verify all features work end-to-end
+- [ ] Check performance metrics
+- [ ] Prepare deployment checklist

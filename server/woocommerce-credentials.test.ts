@@ -7,6 +7,7 @@ import { describe, it, expect } from "vitest";
 
 describe("WooCommerce API Credentials", () => {
   it("should validate Consumer Key and Secret by calling GET /customers", async () => {
+    // Increased timeout for API calls (15 seconds)
     const consumerKey = process.env.WOOCOMMERCE_CONSUMER_KEY;
     const consumerSecret = process.env.WOOCOMMERCE_CONSUMER_SECRET;
     const woocommerceUrl = process.env.WOOCOMMERCE_URL;
@@ -57,6 +58,7 @@ describe("WooCommerce API Credentials", () => {
   });
 
   it("should be able to create a test customer in WooCommerce", async () => {
+    // Increased timeout for API calls (15 seconds)
     const consumerKey = process.env.WOOCOMMERCE_CONSUMER_KEY;
     const consumerSecret = process.env.WOOCOMMERCE_CONSUMER_SECRET;
     const woocommerceUrl = process.env.WOOCOMMERCE_URL;
