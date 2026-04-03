@@ -93,7 +93,8 @@ export const appRouter = router({
       .input(
         z.object({
           companyName: z.string().min(2, "Firmenname erforderlich"),
-          name: z.string().min(2, "Name erforderlich"),
+          firstName: z.string().min(1, "Vorname erforderlich"),
+          lastName: z.string().min(1, "Nachname erforderlich"),
           email: z.string().email("Gültige E-Mail erforderlich"),
           phone: z.string().optional(),
           uid: z.string()

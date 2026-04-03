@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 import B2BAccessRequestModal from "@/components/B2BAccessRequestModal";
 import B2BLoginModal from "@/components/B2BLoginModal";
 
+
 export default function Home() {
   // The userAuth hooks provides authentication state
   // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
@@ -67,6 +68,7 @@ export default function Home() {
           window.location.hash = "";
         }}
       />
+
     </div>
   );
 }

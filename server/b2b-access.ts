@@ -9,7 +9,8 @@ import { sendContactConfirmationEmail } from "./email";
 
 export const B2BAccessRequestSchema = z.object({
   companyName: z.string().min(2, "Firmenname erforderlich"),
-  name: z.string().min(2, "Name erforderlich"),
+  firstName: z.string().min(1, "Vorname erforderlich"),
+  lastName: z.string().min(1, "Nachname erforderlich"),
   email: z.string().email("Gültige E-Mail erforderlich"),
   phone: z.string().optional(),
   uid: z.string()
@@ -17,6 +18,12 @@ export const B2BAccessRequestSchema = z.object({
 });
 
 export type B2BAccessRequest = z.infer<typeof B2BAccessRequestSchema>;
+
+// For backward compatibility with functions expecting 'name'
+export interface B2BAccessRequestInput extends B2BAccessRequest {
+  firstName: string;
+  lastName: string;
+}
 
 export interface B2BAccessRequestResult {
   success: boolean;
@@ -40,10 +47,9 @@ export async function processB2BAccessRequest(
     // Validate input
     const validated = B2BAccessRequestSchema.parse(data);
 
-    // Split name into first and last name
-    const nameParts = validated.name.trim().split(/\s+/);
-    const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(" ") || firstName;
+    // Use firstName and lastName directly from validated data
+    const firstName = validated.firstName;
+    const lastName = validated.lastName;
 
     // Create WooCommerce customer with B2B flag
     const customer = await createWooCommerceCustomer({

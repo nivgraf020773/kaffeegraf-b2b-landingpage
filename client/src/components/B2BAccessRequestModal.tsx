@@ -52,12 +52,10 @@ export default function B2BAccessRequestModal({
     setIsLoading(true);
 
     try {
-      // Combine firstName and lastName for the name field in b2b.accessRequest
-      const fullName = `${form.firstName} ${form.lastName}`.trim();
-      
       await b2bAccessMutation.mutateAsync({
         companyName: form.companyName,
-        name: fullName,
+        firstName: form.firstName,
+        lastName: form.lastName,
         email: form.email,
         phone: form.phone,
         uid: form.uid.toUpperCase(),

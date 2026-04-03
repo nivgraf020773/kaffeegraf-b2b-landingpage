@@ -7,7 +7,8 @@ describe("B2B Access Request", () => {
     async () => {
       const validRequest = {
         companyName: "Test Company GmbH",
-        name: "Max Mustermann",
+        firstName: "Max",
+        lastName: "Mustermann",
         email: `b2b-test-${Date.now()}@example.com`,
         phone: "+43 1 234 56789",
         uid: "ATU12345678",
@@ -24,7 +25,8 @@ describe("B2B Access Request", () => {
   it("should reject invalid UID format", async () => {
     const invalidRequest = {
       companyName: "Test Company GmbH",
-      name: "Max Mustermann",
+      firstName: "Max",
+      lastName: "Mustermann",
       email: "max@example.com",
       uid: "INVALID123", // Invalid format
     };
@@ -37,7 +39,8 @@ describe("B2B Access Request", () => {
   it("should reject invalid email", async () => {
     const invalidRequest = {
       companyName: "Test Company GmbH",
-      name: "Max Mustermann",
+      firstName: "Max",
+      lastName: "Mustermann",
       email: "not-an-email",
       uid: "ATU12345678",
     };
