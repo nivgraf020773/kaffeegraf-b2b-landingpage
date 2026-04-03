@@ -1,4 +1,4 @@
-/* kaffeegraf Footer – Premium Single-Level Structure (No Redundant Bar) */
+/* kaffeegraf Footer – Clean Single-Level Structure */
 import React from 'react';
 
 declare global {
@@ -106,8 +106,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Legal Links - Integrated into footer (no separate bar) */}
-        <div className="flex flex-col lg:flex-row lg:justify-end gap-4 lg:gap-8 mt-12 pt-8 border-t border-white/10">
+        {/* Legal Links - CENTER ALIGNED (no separate black bar) */}
+        <div className="flex flex-col lg:flex-row lg:justify-center gap-4 lg:gap-8 mt-12 pt-8 border-t border-white/10">
           <a
             href="https://kaffeegraf.coffee/impressum/"
             target="_blank"
