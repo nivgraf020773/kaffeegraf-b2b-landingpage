@@ -108,9 +108,10 @@ export default function Footer() {
                   onClick={(e) => {
                     if (link.label === "Cookie-Einstellungen") {
                       e.preventDefault();
-                      // Trigger cookie consent banner
-                      const event = new CustomEvent('openCookieSettings');
-                      window.dispatchEvent(event);
+                      // Open cookie consent settings
+                      if ((window as any).CookieConsent?.show) {
+                        (window as any).CookieConsent.show();
+                      }
                     }
                   }}
                   className="font-['Figtree'] text-sm text-cream/70 hover:text-[#C9A84C] transition-colors duration-200 whitespace-nowrap"
