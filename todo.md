@@ -303,3 +303,41 @@ WooCommerce
 - [x] Align copyright text to right side
 - [x] Maintain responsive layout for mobile/desktop
 - [x] Test layout on browser
+
+
+## Phase 4: CRITICAL FIXES (User Feedback - 2026-04-03) - COMPLETE
+
+### DSGVO Text Corrections
+- [x] Fix: "Mit Absenden" → "Mit dem Absenden" in DSGVOConsent (all modals)
+- [x] Verify all DSGVO consent texts across entire application
+
+### Email Address Standardization
+- [x] Replace all "team@kaffeegraf.coffee" with "b2b@kaffeegraf.coffee"
+- [x] Verify email in KontaktSection component
+- [x] Verify email in Footer component
+
+### Footer Structure Refactor
+- [x] Remove redundant footer bar (black bar with legal links + copyright)
+- [x] Keep only main footer with 3 columns (Brand | Navigation | Contact)
+- [x] Align footer logo/text LEFT with header context
+- [x] Ensure footer brand column matches header left alignment
+
+### Footer Typography Alignment
+- [x] Match "NAVIGATION" heading to Hero/Header section typography (Poppins)
+- [x] Match "KONTAKT" heading to Hero/Header section typography
+- [x] Verify visual hierarchy consistency with main site headings
+
+### Testing & Validation
+- [x] Build project (pnpm build) - SUCCESS
+- [x] TypeScript check - NO ERRORS
+- [x] Browser test: Desktop layout (1280px) - VERIFIED
+- [x] Test all DSGVO text changes - VERIFIED
+- [x] Test all email links - VERIFIED
+- [x] Verify footer alignment and structure - VERIFIED
+- [x] Verify no layout shifts or broken spacing - VERIFIED
+
+### Deployment
+- [x] Commit all changes to GitHub
+- [x] Save checkpoint
+- [x] Deploy to dev environment (manus...)
+- [x] Final validation on deployed version

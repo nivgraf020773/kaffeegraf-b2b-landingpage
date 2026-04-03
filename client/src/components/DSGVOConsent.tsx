@@ -44,7 +44,7 @@ export default function DSGVOConsent({
 
       {/* DSGVO consent text (always shown) */}
       <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-        Mit Absenden stimmen Sie der Verarbeitung Ihrer Daten gemäß unserer{' '}
+        Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Daten gemäß unserer{' '}
         <a
           href="https://kaffeegraf.coffee/datenschutzerklaerung/"
           target="_blank"

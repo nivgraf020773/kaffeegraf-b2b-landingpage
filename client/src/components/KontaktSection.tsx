@@ -137,8 +137,8 @@ export default function KontaktSection() {
                 {
                   icon: Mail,
                   label: "E-Mail",
-                  value: "team@kaffeegraf.coffee",
-                  href: "mailto:team@kaffeegraf.coffee",
+                  value: "b2b@kaffeegraf.coffee",
+                  href: "mailto:b2b@kaffeegraf.coffee",
                 },
                 {
                   icon: Globe,
