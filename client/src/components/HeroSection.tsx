@@ -79,12 +79,12 @@ export default function HeroSection() {
             >
               <Button
                 onClick={() => {
-                  const el = document.querySelector("#main-conversion");
+                  const el = document.querySelector("#kontakt");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
                 className="bg-[#C9A84C] hover:bg-[#B39A3D] text-[#0D0D0B] px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
               >
-                Kaffee bei Ihnen verkosten
+                Zur Verkostung
               </Button>
               <Button
                 onClick={() => {
@@ -97,8 +97,7 @@ export default function HeroSection() {
               </Button>
               <Button
                 onClick={() => {
-                  const el = document.querySelector("#existing-customers");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                  window.location.hash = "#b2b-login";
                 }}
                 variant="outline"
                 className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg font-['Poppins'] font-semibold rounded-lg transition-all"
