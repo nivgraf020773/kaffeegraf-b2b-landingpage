@@ -10,7 +10,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-logo_55fb2e87.webp"
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/RZ_Kaffeegraf_Logo_negativ_97f5444f.webp"
                 alt="kaffeegraf"
                 className="h-10 w-auto"
               />

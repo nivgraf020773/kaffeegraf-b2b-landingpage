@@ -55,7 +55,7 @@ export default function Navigation() {
             className={`flex-shrink-0 transition-all duration-500 ${scrolled ? "md:scale-90" : ""}`}
           >
             <img
-              src="https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-logo_55fb2e87.webp"
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/RZ_Kaffeegraf_Logo_negativ_97f5444f.webp"
               alt="kaffeegraf Logo"
               className={`w-auto transition-all duration-500 ${scrolled ? "h-10" : "h-12"}`}
             />
