@@ -296,3 +296,10 @@ WooCommerce
 - [ ] Verify cookie banner blocks tracking
 - [ ] Take final screenshots
 - [ ] Deploy to Hostinger production
+
+
+## Phase 3.1: Footer Layout Refinement
+- [x] Move copyright text "(c) 2026 Kaffeegraf..." to same row as legal links
+- [x] Align copyright text to right side
+- [x] Maintain responsive layout for mobile/desktop
+- [x] Test layout on browser
