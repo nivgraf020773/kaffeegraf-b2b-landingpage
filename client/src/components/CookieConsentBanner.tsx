@@ -71,7 +71,7 @@ export default function CookieConsentBanner() {
     document.head.appendChild(script);
 
     // Initialize pixel
-    (window as any).fbq('init', process.env.VITE_META_PIXEL_ID || '');
+    (window as any).fbq('init', import.meta.env.VITE_META_PIXEL_ID || '');
     (window as any).fbq('track', 'PageView');
   };
 
@@ -80,7 +80,7 @@ export default function CookieConsentBanner() {
 
     const script = document.createElement('script');
     script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.VITE_GA_ID || ''}`;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${import.meta.env.VITE_GA_ID || ''}`;
     document.head.appendChild(script);
 
     (window as any).dataLayer = (window as any).dataLayer || [];
@@ -89,7 +89,7 @@ export default function CookieConsentBanner() {
     }
     (window as any).gtag = gtag;
     gtag('js', new Date());
-    gtag('config', process.env.VITE_GA_ID || '');
+    gtag('config', import.meta.env.VITE_GA_ID || '');
   };
 
   const handleAcceptAll = () => {
