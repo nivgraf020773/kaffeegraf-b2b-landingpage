@@ -220,3 +220,34 @@ WooCommerce
 - [ ] Verify all features work end-to-end
 - [ ] Check performance metrics
 - [ ] Prepare deployment checklist
+
+
+## Phase 2: Header Enhancement - B2B Access & Login Integration (COMPLETE)
+
+### Desktop Header Enhancements
+- [x] Add "B2B Zugang" text link (right side, medium emphasis)
+- [x] Add "Login" minimal text link (right side, low emphasis)
+- [x] Maintain "Verkostung anfragen" primary button (unchanged)
+- [x] Set spacing to 16px between elements
+- [x] Verify visual hierarchy (CTA dominant)
+
+### Sticky Header Behavior
+- [x] Reduce header height on scroll (after ~80px)
+- [x] Shrink logo slightly on scroll
+- [x] Hide "B2B Zugang" in sticky state (reduce clutter)
+- [x] Keep "Login" and primary CTA visible
+- [x] Optional: Change CTA text "Verkostung anfragen" → "Jetzt verkosten" on scroll
+
+### Mobile Header
+- [x] Keep top bar minimal: Logo + Burger Menu
+- [x] Remove CTA from top bar
+- [x] Add sticky bottom CTA: Full-width "Verkostung anfragen" button
+- [x] Burger menu content: Navigation items (unchanged) + divider + "B2B Zugang beantragen" + "Login" + divider + Primary CTA
+
+### Testing & Validation
+- [x] Test desktop header at various breakpoints
+- [x] Test sticky header scroll behavior
+- [x] Test mobile header and burger menu
+- [x] Verify visual hierarchy and premium look
+- [x] Test all CTA buttons and links functionality
+- [x] Verify navigation items unchanged

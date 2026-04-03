@@ -1,4 +1,4 @@
-/* kaffeegraf Navigation – Refined Dark Elegance
+/* kaffeegraf Navigation
    Sticky top nav with blur backdrop, gold accent on scroll */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,7 +17,7 @@ export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
+    const handleScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -26,6 +26,16 @@ export default function Navigation() {
     setMobileOpen(false);
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleB2BClick = () => {
+    setMobileOpen(false);
+    window.location.hash = "#b2b-access-request";
+  };
+
+  const handleLoginClick = () => {
+    setMobileOpen(false);
+    window.location.hash = "#b2b-login";
   };
 
   return (
@@ -42,12 +52,12 @@ export default function Navigation() {
           <a
             href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-            className="flex-shrink-0"
+            className={`flex-shrink-0 transition-all duration-500 ${scrolled ? "md:scale-90" : ""}`}
           >
             <img
               src="https://d2xsxph8kpxj0f.cloudfront.net/310519663492934822/L7t4bFiPiLxiqH6LDV52Qk/kaffeegraf-logo_55fb2e87.webp"
               alt="kaffeegraf Logo"
-              className="h-12 w-auto"
+              className={`w-auto transition-all duration-500 ${scrolled ? "h-10" : "h-12"}`}
             />
           </a>
 
@@ -65,13 +75,37 @@ export default function Navigation() {
             ))}
           </nav>
 
-          {/* CTA */}
+          {/* Desktop Right Section: B2B Zugang, Login, CTA */}
           <div className="hidden md:flex items-center gap-4 flex-shrink-0">
+            {/* B2B Zugang - Hidden in sticky state */}
+            {!scrolled && (
+              <motion.button
+                initial={{ opacity: 1 }}
+                animate={{ opacity: scrolled ? 0 : 1 }}
+                transition={{ duration: 0.3 }}
+                onClick={handleB2BClick}
+                className="text-mokka hover:text-gold transition-colors duration-300 font-['Figtree'] text-xs font-medium uppercase tracking-widest"
+                style={{ letterSpacing: "0.1em" }}
+              >
+                B2B Zugang
+              </motion.button>
+            )}
+
+            {/* Login - Always visible */}
+            <button
+              onClick={handleLoginClick}
+              className="text-mokka/60 hover:text-mokka transition-colors duration-300 font-['Figtree'] text-xs font-medium uppercase tracking-widest"
+              style={{ letterSpacing: "0.1em" }}
+            >
+              Login
+            </button>
+
+            {/* Primary CTA */}
             <button
               onClick={() => handleNavClick("#kontakt")}
-              className="btn-gold text-xs"
+              className="btn-gold text-xs whitespace-nowrap"
             >
-              Verkostung anfragen
+              {scrolled ? "Jetzt verkosten" : "Verkostung anfragen"}
             </button>
           </div>
 
@@ -95,6 +129,7 @@ export default function Navigation() {
             className="md:hidden bg-[#0D0D0B]/95 backdrop-blur-md border-t border-white/5"
           >
             <div className="container py-6 flex flex-col gap-4">
+              {/* Navigation Items */}
               {navLinks.map((link) => (
                 <button
                   key={link.href}
@@ -104,6 +139,30 @@ export default function Navigation() {
                   {link.label}
                 </button>
               ))}
+
+              {/* Divider */}
+              <div className="border-t border-white/5 my-2" />
+
+              {/* B2B Zugang beantragen */}
+              <button
+                onClick={handleB2BClick}
+                className="text-left text-mokka hover:text-gold transition-colors duration-300 font-['Figtree'] text-sm font-medium uppercase tracking-widest py-2"
+              >
+                B2B Zugang beantragen
+              </button>
+
+              {/* Login */}
+              <button
+                onClick={handleLoginClick}
+                className="text-left text-mokka/60 hover:text-mokka transition-colors duration-300 font-['Figtree'] text-sm font-medium uppercase tracking-widest py-2"
+              >
+                Login
+              </button>
+
+              {/* Divider */}
+              <div className="border-t border-white/5 my-2" />
+
+              {/* Primary CTA */}
               <button
                 onClick={() => handleNavClick("#kontakt")}
                 className="btn-gold mt-4 text-center"
@@ -114,6 +173,21 @@ export default function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Mobile Sticky Bottom CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: scrolled ? 1 : 0, y: scrolled ? 0 : 100 }}
+        transition={{ duration: 0.3 }}
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0D0D0B]/95 backdrop-blur-md border-t border-white/5 p-4 z-40"
+      >
+        <button
+          onClick={() => handleNavClick("#kontakt")}
+          className="btn-gold w-full text-center text-sm"
+        >
+          Verkostung anfragen
+        </button>
+      </motion.div>
     </header>
   );
 }
