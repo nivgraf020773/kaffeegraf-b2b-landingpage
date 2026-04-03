@@ -1,9 +1,10 @@
-/* kaffeegraf Footer – Clean 3-Column Structure Only */
+/* kaffeegraf Footer – 3-Column Main + Legal Bottom Bar */
 import React from 'react';
 
 export default function Footer() {
   return (
     <footer className="bg-[#080806] text-cream border-t border-white/5">
+      {/* MAIN FOOTER: 3-Column Structure */}
       <div className="max-w-7xl mx-auto px-8 lg:px-8 py-16 lg:py-20">
         {/* Desktop: 3-column grid | Tablet: 2-column | Mobile: 1-column */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr] gap-8 lg:gap-16">
@@ -77,6 +78,46 @@ export default function Footer() {
               >
                 www.kaffeegraf.coffee
               </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* LEGAL FOOTER BAR: Bottom Links */}
+      <div className="border-t border-white/5 bg-[#0A0A08]">
+        <div className="max-w-7xl mx-auto px-8 lg:px-8 py-6">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 md:gap-8">
+            {/* Copyright - Left Side */}
+            <p className="font-['Figtree'] text-xs text-cream/60 whitespace-nowrap order-last md:order-first">
+              © 2026 Kaffeegraf. Alle Rechte vorbehalten.
+            </p>
+            
+            {/* Legal Links - Center/Right */}
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+              {[
+                { label: "Impressum", href: "https://kaffeegraf.coffee/impressum" },
+                { label: "Datenschutz", href: "https://kaffeegraf.coffee/datenschutz" },
+                { label: "AGB", href: "https://kaffeegraf.coffee/agb" },
+                { label: "Cookie-Einstellungen", href: "#" },
+              ].map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target={link.label === "Cookie-Einstellungen" ? undefined : "_blank"}
+                  rel={link.label === "Cookie-Einstellungen" ? undefined : "noopener noreferrer"}
+                  onClick={(e) => {
+                    if (link.label === "Cookie-Einstellungen") {
+                      e.preventDefault();
+                      // Trigger cookie consent banner
+                      const event = new CustomEvent('openCookieSettings');
+                      window.dispatchEvent(event);
+                    }
+                  }}
+                  className="font-['Figtree'] text-sm text-cream/70 hover:text-[#C9A84C] transition-colors duration-200 whitespace-nowrap"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </div>
         </div>
