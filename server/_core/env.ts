@@ -7,4 +7,12 @@ export const ENV = {
   isProduction: process.env.NODE_ENV === "production",
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
+  mailHost: process.env.MAIL_HOST ?? "",
+  mailPort: process.env.MAIL_PORT ? parseInt(process.env.MAIL_PORT, 10) : 465,
+  mailUser: process.env.MAIL_USER ?? "",
+  mailPassword: process.env.MAIL_PASSWORD ?? "",
+  mailFrom: process.env.MAIL_FROM ?? "noreply@kaffeegraf.coffee",
+  mailTestMode: process.env.MAIL_TEST_MODE === "true",
+  mailTestInbox: process.env.MAIL_TEST_INBOX ?? "",
+  mailinatorApiToken: process.env.MAILINATOR_API_TOKEN ?? "",
 };

@@ -14,6 +14,7 @@ export interface WooCommerceCustomer {
     company?: string;
     phone?: string;
     email?: string;
+    vat_id?: string;
   };
   meta_data?: Array<{
     key: string;
@@ -30,6 +31,7 @@ export interface WooCommerceCustomerResponse {
     company?: string;
     phone?: string;
     email?: string;
+    vat_id?: string;
   };
   meta_data?: Array<{
     id: number;

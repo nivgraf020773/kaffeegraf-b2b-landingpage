@@ -1,9 +1,15 @@
 /**
  * Email Service
  * Handles sending transactional emails via Hostinger Mailserver
+ *
+ * TEST MODE:
+ * Set MAIL_TEST_MODE=true to redirect ALL outgoing emails to MAIL_TEST_INBOX.
+ * This does NOT change SMTP logic — emails still go through real SMTP.
+ * Only the recipient address is overridden.
  */
 
 import nodemailer from "nodemailer";
+import { ENV } from "./_core/env";
 
 interface ContactConfirmationEmailData {
   firstName: string;
@@ -14,21 +20,25 @@ interface ContactConfirmationEmailData {
 let transporter: nodemailer.Transporter | null = null;
 
 /**
- * Initialize email transporter
+ * Initialize email transporter (singleton)
  */
 function getTransporter(): nodemailer.Transporter {
   if (transporter) {
     return transporter;
   }
 
-  const mailHost = process.env.MAIL_HOST;
-  const mailPort = parseInt(process.env.MAIL_PORT || "587", 10);
-  const mailUser = process.env.MAIL_USER;
-  const mailPassword = process.env.MAIL_PASSWORD;
+  const mailHost = ENV.mailHost;
+  const mailPort = ENV.mailPort;
+  const mailUser = ENV.mailUser;
+  const mailPassword = ENV.mailPassword;
 
   if (!mailHost || !mailUser || !mailPassword) {
-    throw new Error("Email configuration incomplete");
+    throw new Error(
+      "Email configuration incomplete: MAIL_HOST, MAIL_USER, or MAIL_PASSWORD not set"
+    );
   }
+
+  console.log(`[Email Service] Initializing transporter: host=${mailHost}, port=${mailPort}, user=${mailUser}`);
 
   transporter = nodemailer.createTransport({
     host: mailHost,
@@ -44,19 +54,46 @@ function getTransporter(): nodemailer.Transporter {
 }
 
 /**
+ * Resolve recipient address.
+ * In test mode, ALL emails are redirected to MAIL_TEST_INBOX.
+ */
+function resolveRecipient(originalRecipient: string): string {
+  if (ENV.mailTestMode) {
+    const testInbox = ENV.mailTestInbox;
+    if (!testInbox) {
+      throw new Error("MAIL_TEST_MODE=true but MAIL_TEST_INBOX is not set");
+    }
+    console.log(
+      `[Email Service] TEST MODE: redirecting ${originalRecipient} → ${testInbox}`
+    );
+    return testInbox;
+  }
+  return originalRecipient;
+}
+
+/**
  * Send contact form confirmation email
  */
 export async function sendContactConfirmationEmail(
   data: ContactConfirmationEmailData
 ): Promise<void> {
   try {
-    const transporter = getTransporter();
-    const mailFrom = process.env.MAIL_FROM || "b2b@kaffeegraf.coffee";
+    const transport = getTransporter();
+    const mailFrom = ENV.mailFrom;
 
-    // Email to customer
-    await transporter.sendMail({
+    if (ENV.mailTestMode) {
+      console.log(`[Email Service] TEST MODE ACTIVE — all emails → ${ENV.mailTestInbox}`);
+    }
+
+    // BCC address for internal tracking (always the real address, not redirected)
+    const BCC_INTERNAL = "support@kaffeegraf.coffee";
+
+    // Email to customer (or test inbox)
+    const customerRecipient = resolveRecipient(data.email);
+    await transport.sendMail({
       from: mailFrom,
-      to: data.email,
+      to: customerRecipient,
+      bcc: BCC_INTERNAL,
       subject: "Vielen Dank für Ihre Anfrage – kaffeegraf",
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -86,10 +123,14 @@ www.kaffeegraf.coffee
       `,
     });
 
-    // Email to team
-    await transporter.sendMail({
+    console.log(`[Email Service] Customer confirmation sent to: ${customerRecipient}`);
+
+    // Email to team/owner (or test inbox)
+    const ownerRecipient = resolveRecipient(mailFrom);
+    await transport.sendMail({
       from: mailFrom,
-      to: mailFrom,
+      to: ownerRecipient,
+      bcc: BCC_INTERNAL,
       subject: `Neue B2B Kontaktanfrage: ${data.company}`,
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -108,9 +149,8 @@ www.kaffeegraf.coffee
       `,
     });
 
-    console.log(
-      `[Email Service] Confirmation emails sent to ${data.email} and team`
-    );
+    console.log(`[Email Service] Owner notification sent to: ${ownerRecipient}`);
+    console.log(`[Email Service] All emails sent successfully for: ${data.email} / ${data.company}`);
   } catch (error) {
     console.error("[Email Service] Failed to send confirmation email:", error);
     throw error;

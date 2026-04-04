@@ -6,8 +6,6 @@ import { z } from "zod";
 import { validateB2BCredentials, generateSessionToken } from "./b2b-auth";
 import { createWooCommerceCustomer } from "./woocommerce";
 import { sendContactConfirmationEmail } from "./email";
-import { runAllDiagnostics } from "./woocommerce-diagnostic";
-import { runNonceInvestigation } from "./woocommerce-nonce-investigation";
 import { validateVAT } from "./vat-validation";
 import { processB2BAccessRequest } from "./b2b-access";
 
@@ -22,17 +20,6 @@ export const appRouter = router({
       return {
         success: true,
       } as const;
-    }),
-  }),
-
-  diagnostic: router({
-    woocommerce: publicProcedure.query(async () => {
-      const results = await runAllDiagnostics();
-      return results;
-    }),
-    nonceInvestigation: publicProcedure.query(async () => {
-      const results = await runNonceInvestigation();
-      return results;
     }),
   }),
 
@@ -132,6 +119,7 @@ export const appRouter = router({
               company: input.company,
               phone: input.phone,
               email: input.email,
+              vat_id: input.uid, // visible USt.-ID field in WooCommerce admin
             },
             meta_data: [
               {
@@ -140,6 +128,14 @@ export const appRouter = router({
               },
               {
                 key: "vat_id",
+                value: input.uid,
+              },
+              {
+                key: "billing_vat_id",
+                value: input.uid,
+              },
+              {
+                key: "shipping_vat_id",
                 value: input.uid,
               },
               {

@@ -71,8 +71,11 @@ export default function CookieConsentBanner() {
     document.head.appendChild(script);
 
     // Initialize pixel
-    (window as any).fbq('init', import.meta.env.VITE_META_PIXEL_ID || '');
-    (window as any).fbq('track', 'PageView');
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID;
+    if (pixelId) {
+      (window as any).fbq('init', pixelId);
+      (window as any).fbq('track', 'PageView');
+    }
   };
 
   const loadGoogleAnalytics = () => {

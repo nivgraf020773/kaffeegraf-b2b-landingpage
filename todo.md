@@ -341,3 +341,48 @@ WooCommerce
 - [x] Save checkpoint
 - [x] Deploy to dev environment (manus...)
 - [x] Final validation on deployed version
+
+## Phase 4.1: BCC für alle ausgehenden E-Mails
+
+- [x] BCC support@kaffeegraf.coffee zu Kundenbestätigung hinzufügen (team@ hat versagt, support@ verifiziert)
+- [x] BCC support@kaffeegraf.coffee zu Owner-Benachrichtigung hinzufügen
+- [x] Kein Einfluss auf MAIL_TEST_MODE-Logik
+- [x] Build & Deploy auf Hostinger
+- [x] E2E-Test: BCC-Empfang in support@kaffeegraf.coffee direkt bestätigt
+
+## Phase 4.2: SMTP Root Cause Fix (2026-04-04)
+
+- [x] Root Cause identifiziert: LiteSpeed escaped % zu \% in ENV-Variablen → SMTP auth failure
+- [x] Neues SMTP-Passwort ohne %-Zeichen gesetzt: 36BT1qYj-4qfw1M6jHA
+- [x] MAIL_PASSWORD direkt im hPanel Node.js Environment Variables Interface gesetzt
+- [x] SMTP verify() auf Port 465 und 587 erfolgreich
+- [x] E2E E-Mail-Versand verifiziert (Mailinator + support@ Postfach)
+
+## Phase 4.3: Release Readiness Cleanup (2026-04-04)
+
+### Frontend Debug-Artefakte entfernt
+- [x] <div>DEBUG VERSION 1</div> entfernt
+- [x] console.log('[KontaktSection] Component render') entfernt
+- [x] useEffect mit formData changed Log entfernt
+- [x] useEffect mit nativem form.addEventListener('submit') Debug-Listener entfernt
+- [x] console.log in handleChange entfernt
+- [x] console.log in handleSubmit (alle Submit-Debug-Logs) entfernt
+- [x] onClick={() => console.log('submit button clicked')} entfernt
+- [x] Ungenutzter useEffect-Import entfernt
+
+### Backend Diagnostic Endpoints entfernt
+- [x] diagnostic-Router aus appRouter in routers.ts deregistriert
+- [x] Imports für runAllDiagnostics, runNonceInvestigation, runSMTPDiagnostics entfernt
+- [x] /api/trpc/diagnostic.* nicht mehr öffentlich erreichbar
+- [x] Diagnostic-Dateien (woocommerce-diagnostic.ts, smtp-diagnostic.ts, woocommerce-nonce-investigation.ts) behalten aber nicht im Bundle
+- [x] Build-Größe: 65.6 kb → 46.4 kb
+
+## Phase 4.4: UID/VAT Persistenz Fix (2026-04-04)
+
+- [x] Root Cause: billing.vat_id war nicht im WooCommerce-Payload gesetzt
+- [x] billing.vat_id = input.uid in createWooCommerceCustomer Payload ergänzt
+- [x] meta_data.billing_vat_id und meta_data.shipping_vat_id ebenfalls gesetzt
+- [x] WooCommerceCustomer Interface um vat_id in billing erweitert
+- [x] Visuell verifiziert: Customer 180 zeigt ATU99887766 im USt.-ID Feld im WooCommerce Admin
+- [x] Build & TypeScript: sauber
+- [x] Deployed auf Hostinger
