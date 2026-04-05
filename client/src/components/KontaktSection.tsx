@@ -104,7 +104,7 @@ export default function KontaktSection() {
         message: "",
       });
 
-      toast.success("Vielen Dank – Ihre Anfrage ist bei uns eingegangen.");
+      toast.success("Vielen Dank – Ihre Anfrage ist bei uns eingegangen. Wir prüfen diese und melden uns zeitnah persönlich bei Ihnen.");
 
       // Reset form after 5 seconds
       setTimeout(() => {
@@ -133,7 +133,7 @@ export default function KontaktSection() {
                 Vielen Dank
               </h3>
               <p className="font-['Figtree'] text-mokka text-center text-sm">
-                Ihre Anfrage ist bei uns eingegangen.<br />Wir melden uns zeitnah persönlich bei Ihnen.
+                Ihre Anfrage ist bei uns eingegangen.<br />Wir prüfen diese und melden uns zeitnah persönlich bei Ihnen.
               </p>
             </div>
           </div>

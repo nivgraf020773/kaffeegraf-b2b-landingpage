@@ -207,7 +207,7 @@ export const appRouter = router({
             success: true,
             customerId: customer.id,
             message:
-              "Vielen Dank – Ihre Anfrage ist bei uns eingegangen.\nWir melden uns zeitnah persönlich bei Ihnen.",
+              "Vielen Dank – Ihre Anfrage ist bei uns eingegangen.\nWir prüfen diese und melden uns zeitnah persönlich bei Ihnen.",
           };
         } catch (error) {
           console.error("[Contact Form] Error:", error);
