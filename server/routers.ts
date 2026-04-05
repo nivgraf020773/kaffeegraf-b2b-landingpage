@@ -4,7 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { validateB2BCredentials, generateSessionToken } from "./b2b-auth";
-import { createWooCommerceCustomer } from "./woocommerce";
+import { createWooCommerceCustomer, updateWooCommerceCustomer, getWooCommerceCustomerByEmail } from "./woocommerce";
 import { sendContactConfirmationEmail } from "./email";
 import { validateVAT } from "./vat-validation";
 import { processB2BAccessRequest } from "./b2b-access";
@@ -110,8 +110,8 @@ export const appRouter = router({
       )
       .mutation(async ({ input }) => {
         try {
-          // Create customer in WooCommerce
-          const customer = await createWooCommerceCustomer({
+          // Build customer payload (shared for create and update)
+          const customerPayload = {
             email: input.email,
             first_name: input.firstName,
             last_name: input.lastName,
@@ -175,7 +175,18 @@ export const appRouter = router({
                   ]
                 : []),
             ],
-          });
+          };
+
+          // Upsert: check if customer already exists, update or create
+          let customer;
+          const existingCustomer = await getWooCommerceCustomerByEmail(input.email);
+          if (existingCustomer) {
+            console.log(`[Contact Form] Existing customer found (ID: ${existingCustomer.id}), updating...`);
+            customer = await updateWooCommerceCustomer(existingCustomer.id, customerPayload);
+          } else {
+            console.log("[Contact Form] New customer, creating...");
+            customer = await createWooCommerceCustomer(customerPayload);
+          }
 
           // Send confirmation email (non-blocking)
           try {
@@ -196,7 +207,7 @@ export const appRouter = router({
             success: true,
             customerId: customer.id,
             message:
-              "Vielen Dank für Ihre Anfrage! Wir melden uns innerhalb von 24 Stunden bei Ihnen.",
+              "Vielen Dank – Ihre Anfrage ist bei uns eingegangen.\nWir melden uns zeitnah persönlich bei Ihnen.",
           };
         } catch (error) {
           console.error("[Contact Form] Error:", error);

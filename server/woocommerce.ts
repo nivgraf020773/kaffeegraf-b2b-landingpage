@@ -222,6 +222,87 @@ export async function createWooCommerceCustomer(
 }
 
 /**
+ * Update an existing customer in WooCommerce with retry logic
+ */
+export async function updateWooCommerceCustomer(
+  customerId: number,
+  customerData: WooCommerceCustomer
+): Promise<WooCommerceCustomerResponse> {
+  const consumerKey = process.env.WOOCOMMERCE_CONSUMER_KEY;
+  const consumerSecret = process.env.WOOCOMMERCE_CONSUMER_SECRET;
+  const woocommerceUrl = process.env.WOOCOMMERCE_URL;
+
+  if (!consumerKey || !consumerSecret || !woocommerceUrl) {
+    throw new Error("WooCommerce credentials not configured");
+  }
+
+  const credentials = Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
+
+  let lastError: any = null;
+
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const url = `${woocommerceUrl}/wp-json/wc/v3/customers/${customerId}`;
+
+      console.log(`[WooCommerce API] Updating customer ${customerId} (attempt ${attempt}/${MAX_RETRIES})`);
+      console.log("  Email:", customerData.email);
+
+      const response = await fetchWithTimeout(url, {
+        method: "PUT",
+        headers: {
+          Authorization: `Basic ${credentials}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(customerData),
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        console.error(`[WooCommerce API Error] Status ${response.status} when updating customer:`, responseData);
+
+        if (isRetryableError(response.status, null) && attempt < MAX_RETRIES) {
+          const delay = getBackoffDelay(attempt);
+          console.log(`[WooCommerce API] Retrying in ${delay}ms after status ${response.status}`);
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          lastError = responseData;
+          continue;
+        }
+
+        const userMessage = mapWooCommerceError(responseData);
+        throw new Error(`WooCommerce API error: ${response.status} - ${userMessage}`);
+      }
+
+      console.log("[WooCommerce API] Customer updated successfully:", responseData.id);
+      return responseData;
+    } catch (error) {
+      lastError = error;
+
+      if (attempt < MAX_RETRIES) {
+        const isRetryable =
+          error instanceof Error &&
+          (error.name === "AbortError" ||
+            error.message.includes("timeout") ||
+            error.message.includes("ECONNREFUSED"));
+
+        if (isRetryable) {
+          const delay = getBackoffDelay(attempt);
+          console.log(`[WooCommerce API] Retrying in ${delay}ms after error:`, error.message);
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          continue;
+        }
+      }
+
+      console.error("[WooCommerce Integration] Failed to update customer:", error);
+      throw error;
+    }
+  }
+
+  console.error("[WooCommerce Integration] All retry attempts failed:", lastError);
+  throw lastError || new Error("WooCommerce API unavailable after multiple retries");
+}
+
+/**
  * Get customer by email with retry logic
  */
 export async function getWooCommerceCustomerByEmail(
@@ -248,8 +329,9 @@ export async function getWooCommerceCustomerByEmail(
       );
       console.log("  Email:", email);
 
+      // Use email= for exact match (WooCommerce REST API supports this parameter)
       const response = await fetchWithTimeout(
-        `${woocommerceUrl}/wp-json/wc/v3/customers?search=${encodeURIComponent(email)}`,
+        `${woocommerceUrl}/wp-json/wc/v3/customers?email=${encodeURIComponent(email)}`,
         {
           method: "GET",
           headers: {
@@ -279,10 +361,14 @@ export async function getWooCommerceCustomerByEmail(
       }
 
       const customers = await response.json();
+      // Filter for exact email match (API may return partial matches)
+      const exactMatch = Array.isArray(customers)
+        ? customers.find((c: WooCommerceCustomerResponse) => c.email?.toLowerCase() === email.toLowerCase())
+        : null;
       console.log(
-        `[WooCommerce API] Found ${customers.length} customer(s) for email: ${email}`
+        `[WooCommerce API] Found ${customers.length} customer(s), exact match: ${exactMatch ? exactMatch.id : 'none'}`
       );
-      return customers.length > 0 ? customers[0] : null;
+      return exactMatch || null;
     } catch (error) {
       lastError = error;
 

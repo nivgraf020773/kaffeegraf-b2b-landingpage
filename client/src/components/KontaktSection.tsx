@@ -104,7 +104,7 @@ export default function KontaktSection() {
         message: "",
       });
 
-      toast.success("Vielen Dank! Wir melden uns innerhalb von 24 Stunden bei Ihnen.");
+      toast.success("Vielen Dank – Ihre Anfrage ist bei uns eingegangen.");
 
       // Reset form after 5 seconds
       setTimeout(() => {
@@ -130,10 +130,10 @@ export default function KontaktSection() {
             <div className="bg-[#1A1512] p-8 border border-[#C9A84C]/30 flex flex-col items-center justify-center min-h-[500px]">
               <CheckCircle size={64} className="text-[#C9A84C] mb-6" strokeWidth={1.5} />
               <h3 className="font-['Poppins'] text-2xl font-light text-cream text-center mb-3">
-                Vielen Dank!
+                Vielen Dank
               </h3>
               <p className="font-['Figtree'] text-mokka text-center text-sm">
-                Wir haben Ihre Anfrage erhalten und melden uns innerhalb von 24 Stunden bei Ihnen.
+                Ihre Anfrage ist bei uns eingegangen.<br />Wir melden uns zeitnah persönlich bei Ihnen.
               </p>
             </div>
           </div>

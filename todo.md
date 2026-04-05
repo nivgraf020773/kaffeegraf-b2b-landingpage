@@ -386,3 +386,28 @@ WooCommerce
 - [x] Visuell verifiziert: Customer 180 zeigt ATU99887766 im USt.-ID Feld im WooCommerce Admin
 - [x] Build & TypeScript: sauber
 - [x] Deployed auf Hostinger
+
+## Phase 4.5: WordPress Plugin — B2B Admin Enhancements
+
+- [ ] Plugin-Datei kaffeegraf-b2b-admin.php erstellen
+- [ ] Hook: show_user_profile / edit_user_profile für User-Edit-Seite
+- [ ] Hook: woocommerce_admin_billing_fields oder woocommerce_customer_meta_fields (optional)
+- [ ] Felder read-only anzeigen: b2b_status, vat_validation_status, vat_validation_checked_at, vat_validation_source, b2b_business_type, b2b_priority, b2b_message, vat_id, billing_vat_id, shipping_vat_id
+- [ ] Sauberes Layout (Tabelle mit business-freundlichen Labels)
+- [ ] Plugin auf Hostinger deployen (/wp-content/plugins/kaffeegraf-b2b-admin/)
+- [ ] Plugin in WordPress aktivieren
+- [ ] Screenshot-Beweis mit echten Daten (Customer 180)
+- [ ] Verifizieren: read-only, kein Editieren möglich
+- [ ] Verifizieren: WordPress/WooCommerce funktioniert normal
+
+## Phase 4.6: Existing Customer Upsert + Friendly UX (2026-04-05)
+
+- [x] findWooCommerceCustomerByEmail Funktion in woocommerce.ts (GET /customers?email=)
+- [x] updateWooCommerceCustomer Funktion in woocommerce.ts (PUT /customers/{id})
+- [x] contact.submit: Upsert-Logik (create wenn neu, update wenn vorhanden)
+- [x] Erfolgstext: "Vielen Dank – Ihre Anfrage ist bei uns eingegangen.\nWir melden uns zeitnah persönlich bei Ihnen."
+- [x] Kein technischer Fehler an den User bei Duplikat-E-Mail
+- [x] Build + TypeScript sauber
+- [ ] Deploy auf Hostinger
+- [ ] Verifikation: neuer Kunde → erstellt → Erfolgsmeldung
+- [ ] Verifikation: bestehender Kunde → aktualisiert → Erfolgsmeldung
