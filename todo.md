@@ -446,15 +446,15 @@ WooCommerce
 
 ## Phase 6 — Access Gating (b2b_access_status, B2B_STATUS_SPEC v2)
 
-- [ ] Bestehende Auth-Logik und Dashboard-Route analysieren
-- [ ] Server-seitige tRPC-Prozedur: b2b_access_status aus WooCommerce lesen
-- [ ] Gating: nur b2b_access_status = active erlaubt Zugang (b2b_status NICHT verwendet)
-- [ ] Frontend: statusspezifische Meldung für none (exakter Wortlaut)
-- [ ] Frontend: statusspezifische Meldung für requested (exakter Wortlaut)
-- [ ] Frontend: statusspezifische Meldung für approved (exakter Wortlaut)
-- [ ] Frontend: statusspezifische Meldung für rejected (exakter Wortlaut)
-- [ ] Kein Bypass via direkter URL möglich (server-side enforcement)
-- [ ] pnpm build sauber
-- [ ] npx tsc --noEmit sauber
-- [ ] Deploy auf Hostinger
-- [ ] Verifikation aller 5 States mit Screenshot/Log
+- [x] Bestehende Auth-Logik und Dashboard-Route analysieren
+- [x] Server-seitige tRPC-Prozedur: b2b_access_status aus WooCommerce lesen
+- [x] Gating: nur b2b_access_status = active erlaubt Zugang (b2b_status NICHT verwendet)
+- [x] Frontend: statusspezifische Meldung für none (exakter Wortlaut)
+- [x] Frontend: statusspezifische Meldung für requested (exakter Wortlaut)
+- [x] Frontend: statusspezifische Meldung für approved (exakter Wortlaut)
+- [x] Frontend: statusspezifische Meldung für rejected (exakter Wortlaut)
+- [x] Kein Bypass via direkter URL möglich (server-side enforcement)
+- [x] pnpm build sauber
+- [x] npx tsc --noEmit sauber
+- [x] Deploy auf Hostinger
+- [x] Verifikation aller 5 States mit Screenshot/Log
