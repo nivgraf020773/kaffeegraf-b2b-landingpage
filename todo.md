@@ -394,7 +394,7 @@ WooCommerce
 - [ ] Hook: woocommerce_admin_billing_fields oder woocommerce_customer_meta_fields (optional)
 - [ ] Felder read-only anzeigen: b2b_status, vat_validation_status, vat_validation_checked_at, vat_validation_source, b2b_business_type, b2b_priority, b2b_message, vat_id, billing_vat_id, shipping_vat_id
 - [ ] Sauberes Layout (Tabelle mit business-freundlichen Labels)
-- [ ] Plugin auf Hostinger deployen (/wp-content/plugins/kaffeegraf-b2b-admin/)
+- [x] Plugin auf Hostinger deployen (/wp-content/plugins/kaffeegraf-b2b-admin/)
 - [ ] Plugin in WordPress aktivieren
 - [ ] Screenshot-Beweis mit echten Daten (Customer 180)
 - [ ] Verifizieren: read-only, kein Editieren möglich
@@ -420,3 +420,41 @@ WooCommerce
 - [ ] Access request flow: setzt nur b2b_access_status = requested
 - [ ] Admin plugin: beide Felder sichtbar + editierbar
 - [ ] Timestamps: b2b_access_requested_at + b2b_access_approved_at korrekt setzen
+
+## Phase 5 — b2b_access_status im Admin-Plugin editierbar machen
+
+- [x] Bestehendes B2B Admin Plugin via SSH lesen
+- [x] b2b_access_status Dropdown (5 Werte) in "B2B Informationen" Sektion einfügen
+- [x] Human-readable Labels: none→Kein Zugang, requested→Angefragt, approved→Freigegeben, rejected→Abgelehnt, active→Aktiv
+- [x] Aktuellen Wert vorselektieren
+- [x] Hinweistext unter dem Feld einfügen
+- [x] Timestamp-Logik: b2b_access_requested_at bei requested, b2b_access_approved_at bei approved/active
+- [x] Speichern via update_user_meta() (kein direktes SQL)
+- [x] Plugin auf Hostinger deployen
+- [x] Screenshot-Beweis: Dropdown sichtbar, alle 5 Werte, Speichern funktioniert
+- [x] b2b_status bleibt unverändert (kein Regression)
+
+## Phase 5.1 — B2B Informationen Sektion konsolidieren (eine einzige Sektion)
+
+- [ ] Alten read-only B2B-Block im Plugin identifizieren (welche Datei/Klasse rendert ihn)
+- [ ] Alten Block entfernen / deaktivieren
+- [ ] Neuen unified Block in class-b2b-user-profile.php: alle read-only Felder + b2b_access_status Dropdown
+- [ ] Auf Hostinger deployen
+- [ ] Screenshot: nur eine "B2B Informationen" Sektion sichtbar
+- [ ] Speichern funktioniert noch
+- [ ] b2b_status read-only, b2b_access_status editierbar
+
+## Phase 6 — Access Gating (b2b_access_status, B2B_STATUS_SPEC v2)
+
+- [ ] Bestehende Auth-Logik und Dashboard-Route analysieren
+- [ ] Server-seitige tRPC-Prozedur: b2b_access_status aus WooCommerce lesen
+- [ ] Gating: nur b2b_access_status = active erlaubt Zugang (b2b_status NICHT verwendet)
+- [ ] Frontend: statusspezifische Meldung für none (exakter Wortlaut)
+- [ ] Frontend: statusspezifische Meldung für requested (exakter Wortlaut)
+- [ ] Frontend: statusspezifische Meldung für approved (exakter Wortlaut)
+- [ ] Frontend: statusspezifische Meldung für rejected (exakter Wortlaut)
+- [ ] Kein Bypass via direkter URL möglich (server-side enforcement)
+- [ ] pnpm build sauber
+- [ ] npx tsc --noEmit sauber
+- [ ] Deploy auf Hostinger
+- [ ] Verifikation aller 5 States mit Screenshot/Log

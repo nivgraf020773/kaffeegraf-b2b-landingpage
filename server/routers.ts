@@ -4,7 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { validateB2BCredentials, generateSessionToken } from "./b2b-auth";
-import { createWooCommerceCustomer, updateWooCommerceCustomer, getWooCommerceCustomerByEmail } from "./woocommerce";
+import { createWooCommerceCustomer, updateWooCommerceCustomer, getWooCommerceCustomerByEmail, getWooCommerceCustomerById } from "./woocommerce";
 import { sendContactConfirmationEmail } from "./email";
 import { validateVAT } from "./vat-validation";
 import { processB2BAccessRequest } from "./b2b-access";
@@ -46,21 +46,51 @@ export const appRouter = router({
       )
       .mutation(async ({ input }) => {
         try {
-          // Validate against WooCommerce
+          // Validate credentials against WooCommerce
           const customer = await validateB2BCredentials(input.identifier, input.password, input.type);
           
           if (!customer) {
             return {
               success: false,
+              accessStatus: null as string | null,
               message: "Kundennummer/E-Mail oder Passwort ungültig",
             };
           }
 
-          // Generate session token (optional - could use JWT)
+          // ─────────────────────────────────────────────────────────────
+          // ACCESS GATING — B2B_STATUS_SPEC v2
+          // ONLY b2b_access_status is used for access control.
+          // b2b_status (business relationship) is NEVER used here.
+          // ─────────────────────────────────────────────────────────────
+          const fullCustomer = await getWooCommerceCustomerById(customer.id);
+          const accessStatus = fullCustomer?.meta_data?.find(
+            (m: { key: string; value: string }) => m.key === "b2b_access_status"
+          )?.value ?? "none";
+
+          // Status-specific denial messages (exact wording per spec)
+          const DENIAL_MESSAGES: Record<string, string> = {
+            none: "Für Ihr Konto ist derzeit noch kein B2B-Zugang freigeschaltet.\nWenn Sie einen Zugang benötigen, stellen Sie bitte eine Anfrage über das Formular.",
+            requested: "Ihre Anfrage ist bei uns eingegangen und wird derzeit geprüft.\nWir melden uns zeitnah persönlich bei Ihnen.",
+            approved: "Ihr Zugang wurde bereits freigegeben, ist aber noch nicht vollständig aktiviert.\nWir melden uns zeitnah persönlich bei Ihnen.",
+            rejected: "Ihr Zugang ist derzeit nicht freigeschaltet.\nBei Fragen melden wir uns gerne persönlich bei Ihnen.",
+          };
+
+          if (accessStatus !== "active") {
+            const denialMessage = DENIAL_MESSAGES[accessStatus] ?? DENIAL_MESSAGES["none"];
+            console.log(`[B2B Login] Access denied for customer ${customer.id}: b2b_access_status=${accessStatus}`);
+            return {
+              success: false,
+              accessStatus,
+              message: denialMessage,
+            };
+          }
+
+          // Access granted — generate session token
           const token = generateSessionToken(customer.id);
 
           return {
             success: true,
+            accessStatus: "active",
             token,
             customerId: customer.id,
             customerNumber: customer.meta_data?.find((m: any) => m.key === "b2b_customer_number")?.value,
@@ -71,6 +101,7 @@ export const appRouter = router({
           console.error("B2B Login Error:", error);
           return {
             success: false,
+            accessStatus: null as string | null,
             message: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
           };
         }

@@ -303,6 +303,80 @@ export async function updateWooCommerceCustomer(
 }
 
 /**
+ * Get customer by ID with retry logic
+ */
+export async function getWooCommerceCustomerById(
+  customerId: number
+): Promise<WooCommerceCustomerResponse | null> {
+  const consumerKey = process.env.WOOCOMMERCE_CONSUMER_KEY;
+  const consumerSecret = process.env.WOOCOMMERCE_CONSUMER_SECRET;
+  const woocommerceUrl = process.env.WOOCOMMERCE_URL;
+
+  if (!consumerKey || !consumerSecret || !woocommerceUrl) {
+    throw new Error("WooCommerce credentials not configured");
+  }
+
+  const credentials = Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
+
+  let lastError: any = null;
+
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      console.log(`[WooCommerce API] Fetching customer by ID ${customerId} (attempt ${attempt}/${MAX_RETRIES})`);
+
+      const response = await fetchWithTimeout(
+        `${woocommerceUrl}/wp-json/wc/v3/customers/${customerId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Basic ${credentials}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          return null;
+        }
+        if (isRetryableError(response.status, null) && attempt < MAX_RETRIES) {
+          const delay = getBackoffDelay(attempt);
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          lastError = new Error(`HTTP ${response.status}`);
+          continue;
+        }
+        throw new Error(`WooCommerce API error: ${response.status}`);
+      }
+
+      const customer = await response.json();
+      console.log(`[WooCommerce API] Customer ${customerId} fetched successfully`);
+      return customer as WooCommerceCustomerResponse;
+    } catch (error) {
+      lastError = error;
+
+      if (attempt < MAX_RETRIES) {
+        const isRetryable =
+          error instanceof Error &&
+          (error.name === "AbortError" ||
+            error.message.includes("timeout") ||
+            error.message.includes("ECONNREFUSED"));
+
+        if (isRetryable) {
+          const delay = getBackoffDelay(attempt);
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          continue;
+        }
+      }
+
+      console.error("[WooCommerce Integration] Failed to get customer by ID:", error);
+      throw error;
+    }
+  }
+
+  throw lastError || new Error("WooCommerce API unavailable after multiple retries");
+}
+
+/**
  * Get customer by email with retry logic
  */
 export async function getWooCommerceCustomerByEmail(

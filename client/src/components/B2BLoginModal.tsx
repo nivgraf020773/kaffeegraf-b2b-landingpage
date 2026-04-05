@@ -56,6 +56,9 @@ export default function B2BLoginModal({
         // Redirect to dashboard
         window.location.href = result.dashboardUrl || "https://kaffeebizdash-fqjhwufg.manus.space/dashboard";
       } else {
+        // Show the status-specific denial message from the server.
+        // The server enforces access gating based on b2b_access_status only.
+        // b2b_status is never used for access control.
         setError(result.message || "Anmeldung fehlgeschlagen");
       }
     } catch (err) {
