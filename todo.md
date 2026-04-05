@@ -408,6 +408,15 @@ WooCommerce
 - [x] Erfolgstext: "Vielen Dank – Ihre Anfrage ist bei uns eingegangen.\nWir melden uns zeitnah persönlich bei Ihnen."
 - [x] Kein technischer Fehler an den User bei Duplikat-E-Mail
 - [x] Build + TypeScript sauber
-- [ ] Deploy auf Hostinger
-- [ ] Verifikation: neuer Kunde → erstellt → Erfolgsmeldung
-- [ ] Verifikation: bestehender Kunde → aktualisiert → Erfolgsmeldung
+- [x] Deploy auf Hostinger
+- [x] Verifikation: neuer Kunde → erstellt → Erfolgsmeldung
+- [x] Verifikation: bestehender Kunde → aktualisiert → Erfolgsmeldung
+
+## Phase 5 — B2B Status & Access Model (Spec)
+
+- [x] B2B_STATUS_SPEC.md als verbindliche Referenz im Projekt gespeichert
+- [ ] WooCommerce meta keys: b2b_status + b2b_access_status getrennt halten (nie mergen)
+- [ ] Contact form: setzt nur b2b_status = prospect (kein b2b_access_status)
+- [ ] Access request flow: setzt nur b2b_access_status = requested
+- [ ] Admin plugin: beide Felder sichtbar + editierbar
+- [ ] Timestamps: b2b_access_requested_at + b2b_access_approved_at korrekt setzen
