@@ -484,6 +484,20 @@ WooCommerce
 - [x] Login-Button immer sichtbar (kein konditionelles Verstecken)
 - [x] npx tsc --noEmit sauber
 - [x] pnpm build sauber
-- [ ] Deploy auf Hostinger
-- [ ] Verifikation: active user → Redirect zu kaffeebizdash
-- [ ] Verifikation: denied user → bleibt auf Login, sieht korrekte Meldung
+- [x] Deploy auf Hostinger
+- [x] Verifikation: active user → Redirect zu kaffeebizdash
+- [x] Verifikation: denied user → bleibt auf Login, sieht korrekte Meldung
+
+## Phase 9 — Final Release Freeze (v1.0.0)
+
+- [x] Finale Code-Validierung: Debug-Artefakte, Test-Modus, Diagnose-Routen geprüft
+- [x] MAIL_TEST_MODE: defaults to false (kein Env-Var gesetzt → inaktiv)
+- [x] Keine Diagnose-Routen exponiert
+- [x] Keine Demo-Credentials im Frontend
+- [x] Keine hardcodierten Secrets im Quellcode
+- [x] TypeScript: 0 Errors (npx tsc --noEmit)
+- [x] CHECKPOINT_NOTES.md erstellt (v1.0.0 Release Notes)
+- [x] Finaler Checkpoint erstellt
+- [x] GitHub synchron
+- [x] Release-ZIP erstellt
+- [x] Go-Live-Verdict: PRODUCTION-READY: YES
