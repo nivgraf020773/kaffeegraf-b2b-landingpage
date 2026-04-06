@@ -122,7 +122,7 @@ export const appRouter = router({
             token,
             customerId: customer.id,
             customerNumber: customer.meta_data?.find((m: any) => m.key === "b2b_customer_number")?.value,
-            dashboardUrl: "https://kaffeebizdash-fqjhwufg.manus.space/dashboard",
+            dashboardUrl: "https://kaffeebizdash-fqjhwufg.manus.space",
             message: "Erfolgreich angemeldet",
           };
         } catch (error) {

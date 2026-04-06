@@ -53,8 +53,8 @@ export default function B2BLoginModal({
           localStorage.setItem("b2b_token", result.token);
         }
         
-        // Redirect to dashboard
-        window.location.href = result.dashboardUrl || "https://kaffeebizdash-fqjhwufg.manus.space/dashboard";
+        // Redirect to dashboard — always use the exact target URL
+        window.location.href = result.dashboardUrl || "https://kaffeebizdash-fqjhwufg.manus.space";
       } else {
         // Show the status-specific denial message from the server.
         // The server enforces access gating based on b2b_access_status only.
@@ -181,17 +181,6 @@ export default function B2BLoginModal({
                   {isLoading ? "Wird verarbeitet..." : "Anmelden"}
                 </Button>
               </form>
-
-              {/* Demo Credentials */}
-              <div className="mt-6 pt-6 border-t border-white/10">
-                <p className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest text-mokka mb-3">
-                  Demo-Zugänge
-                </p>
-                <div className="space-y-2 text-xs font-['Figtree'] text-mokka/60">
-                  <p>KG-2024-0042 / demo123</p>
-                  <p>KG-2026-0108 / test456</p>
-                </div>
-              </div>
             </>
           </motion.div>
         </div>

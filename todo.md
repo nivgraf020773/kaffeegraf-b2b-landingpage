@@ -470,6 +470,20 @@ WooCommerce
 - [x] Keine technischen Details in der Fehlermeldung
 - [x] npx tsc --noEmit sauber
 - [x] pnpm build sauber
-- [ ] Deploy auf Hostinger via GitHub
-- [ ] Verifikation: normaler Flow funktioniert
-- [ ] Verifikation: Rate-Limit-Meldung bei Überschreitung nachgewiesen
+- [x] Deploy auf Hostinger via GitHub
+- [x] Verifikation: normaler Flow funktioniert
+- [x] Verifikation: Rate-Limit-Meldung bei Überschreitung nachgewiesen
+
+## Phase 8 — B2B Login Frontend UX Alignment
+
+- [x] Aktuellen Login-Flow analysieren (B2BLoginModal, Navigation)
+- [x] Redirect bei Erfolg: window.location.href = "https://kaffeebizdash-fqjhwufg.manus.space"
+- [x] Kein relativer Router-Redirect
+- [x] Fehlermeldung: exakt vom Backend übernehmen, kein eigenes Fallback-Wording
+- [x] Kein Frontend-seitiges b2b_access_status-Check
+- [x] Login-Button immer sichtbar (kein konditionelles Verstecken)
+- [x] npx tsc --noEmit sauber
+- [x] pnpm build sauber
+- [ ] Deploy auf Hostinger
+- [ ] Verifikation: active user → Redirect zu kaffeebizdash
+- [ ] Verifikation: denied user → bleibt auf Login, sieht korrekte Meldung
