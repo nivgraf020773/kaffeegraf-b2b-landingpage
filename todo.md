@@ -458,3 +458,18 @@ WooCommerce
 - [x] npx tsc --noEmit sauber
 - [x] Deploy auf Hostinger
 - [x] Verifikation aller 5 States mit Screenshot/Log
+
+## Phase 7 — Rate Limiting für öffentliche B2B-Endpunkte
+
+- [x] Alle öffentlichen Endpunkte identifizieren und auf vorhandenes Rate Limiting prüfen
+- [x] In-Memory Rate-Limiter implementieren (server/rate-limiter.ts, kein neues npm-Paket)
+- [x] contact.submit: 5 req / 15 min / IP
+- [x] b2b.accessRequest: 5 req / 15 min / IP
+- [x] b2b.login: 5 attempts / 15 min / IP
+- [x] Fehlermeldung bei Überschreitung: "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es in einigen Minuten erneut."
+- [x] Keine technischen Details in der Fehlermeldung
+- [x] npx tsc --noEmit sauber
+- [x] pnpm build sauber
+- [ ] Deploy auf Hostinger via GitHub
+- [ ] Verifikation: normaler Flow funktioniert
+- [ ] Verifikation: Rate-Limit-Meldung bei Überschreitung nachgewiesen

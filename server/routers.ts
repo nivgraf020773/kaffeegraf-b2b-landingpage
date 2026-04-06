@@ -8,6 +8,20 @@ import { createWooCommerceCustomer, updateWooCommerceCustomer, getWooCommerceCus
 import { sendContactConfirmationEmail } from "./email";
 import { validateVAT } from "./vat-validation";
 import { processB2BAccessRequest } from "./b2b-access";
+import { checkRateLimit, RATE_LIMIT_POLICIES, RATE_LIMIT_MESSAGE } from "./rate-limiter";
+
+/**
+ * Extract client IP from Express request.
+ * Respects X-Forwarded-For (set by reverse proxies like LiteSpeed/Nginx).
+ */
+function getClientIp(req: { ip?: string; headers: Record<string, string | string[] | undefined> }): string {
+  const forwarded = req.headers["x-forwarded-for"];
+  if (forwarded) {
+    const first = Array.isArray(forwarded) ? forwarded[0] : forwarded.split(",")[0];
+    return first.trim();
+  }
+  return req.ip ?? "unknown";
+}
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -44,7 +58,21 @@ export const appRouter = router({
           type: z.enum(["email", "customerNumber"]),
         })
       )
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        // ─────────────────────────────────────────────────────────────
+        // RATE LIMITING — 5 attempts / 15 min / IP
+        // ─────────────────────────────────────────────────────────────
+        const ip = getClientIp(ctx.req);
+        const rateCheck = checkRateLimit("b2b.login", ip, RATE_LIMIT_POLICIES["b2b.login"]);
+        if (!rateCheck.allowed) {
+          console.warn(`[B2B Login] Rate limit exceeded for IP: ${ip}`);
+          return {
+            success: false,
+            accessStatus: null as string | null,
+            message: RATE_LIMIT_MESSAGE,
+          };
+        }
+
         try {
           // Validate credentials against WooCommerce
           const customer = await validateB2BCredentials(input.identifier, input.password, input.type);
@@ -119,7 +147,20 @@ export const appRouter = router({
             .regex(/^ATU\d{8}$/, "UID muss ATU + 8 Ziffern sein"),
         })
       )
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        // ─────────────────────────────────────────────────────────────
+        // RATE LIMITING — 5 req / 15 min / IP
+        // ─────────────────────────────────────────────────────────────
+        const ip = getClientIp(ctx.req);
+        const rateCheck = checkRateLimit("b2b.accessRequest", ip, RATE_LIMIT_POLICIES["b2b.accessRequest"]);
+        if (!rateCheck.allowed) {
+          console.warn(`[B2B AccessRequest] Rate limit exceeded for IP: ${ip}`);
+          return {
+            success: false,
+            message: RATE_LIMIT_MESSAGE,
+          };
+        }
+
         return processB2BAccessRequest(input);
       }),
   }),
@@ -139,7 +180,17 @@ export const appRouter = router({
           message: z.string().optional(),
         })
       )
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        // ─────────────────────────────────────────────────────────────
+        // RATE LIMITING — 5 req / 15 min / IP
+        // ─────────────────────────────────────────────────────────────
+        const ip = getClientIp(ctx.req);
+        const rateCheck = checkRateLimit("contact.submit", ip, RATE_LIMIT_POLICIES["contact.submit"]);
+        if (!rateCheck.allowed) {
+          console.warn(`[Contact Submit] Rate limit exceeded for IP: ${ip}`);
+          throw new Error(RATE_LIMIT_MESSAGE);
+        }
+
         try {
           // Build customer payload (shared for create and update)
           const customerPayload = {
