@@ -143,19 +143,24 @@ async function validateWordPressPassword(
   password: string
 ): Promise<boolean> {
   try {
-    // Try to get JWT token using email and password
+    // Use kg-b2b/v1/auth endpoint (the active auth endpoint on this WordPress instance)
+    // This endpoint accepts { email, password } and returns { user_id, email, ... } on success
     const response = await axios.post(
-      `${WOOCOMMERCE_URL}/wp-json/jwt-auth/v1/token`,
+      `${WOOCOMMERCE_URL}/wp-json/kg-b2b/v1/auth`,
       {
-        username: email,
+        email: email,
         password: password,
       }
     );
 
-    return !!response.data.token;
-  } catch (error) {
-    // JWT auth might not be available, try alternative method
-    console.log("JWT auth not available, using fallback method");
+    // Success if we get a user_id back
+    return !!(response.data && response.data.user_id);
+  } catch (error: any) {
+    // 401 = invalid credentials (expected for wrong password)
+    if (error?.response?.status === 401) {
+      return false;
+    }
+    console.error("WordPress auth error:", error?.response?.status, error?.response?.data?.code);
     return false;
   }
 }

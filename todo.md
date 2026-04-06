@@ -501,3 +501,11 @@ WooCommerce
 - [x] GitHub synchron
 - [x] Release-ZIP erstellt
 - [x] Go-Live-Verdict: PRODUCTION-READY: YES
+
+## Phase 10 — Debug: Login-Fehler rosalie.marie.graf@gmail.com
+
+- [x] WooCommerce-Kundendaten via API abrufen (ID, b2b_status, b2b_access_status, b2b_password_hash)
+- [x] Auth-Flow tracen: b2b_password_hash vs. JWT-Fallback
+- [x] Exakten Fehlerpunkt bestimmen
+- [x] Minimalen Fix implementieren
+- [ ] Verifikation: Login erfolgreich (pending deploy)
