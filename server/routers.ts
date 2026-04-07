@@ -3,12 +3,17 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { validateB2BCredentials, generateSessionToken } from "./b2b-auth";
-import { createWooCommerceCustomer, updateWooCommerceCustomer, getWooCommerceCustomerByEmail, getWooCommerceCustomerById } from "./woocommerce";
+import { createWooCommerceCustomer, updateWooCommerceCustomer, getWooCommerceCustomerByEmail } from "./woocommerce";
 import { sendContactConfirmationEmail } from "./email";
 import { validateVAT } from "./vat-validation";
 import { processB2BAccessRequest } from "./b2b-access";
 import { checkRateLimit, RATE_LIMIT_POLICIES, RATE_LIMIT_MESSAGE } from "./rate-limiter";
+import axios from "axios";
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const B2B_API_BASE = process.env.B2B_API_URL ?? "https://b2b-api.kaffeegraf.coffee";
+const DASHBOARD_URL = process.env.DASHBOARD_URL ?? "https://b2b-dashboard.kaffeegraf.coffee";
 
 /**
  * Extract client IP from Express request.
@@ -53,9 +58,13 @@ export const appRouter = router({
     login: publicProcedure
       .input(
         z.object({
-          identifier: z.string().min(1, "Kundennummer oder E-Mail erforderlich"),
+          // Login-Contract v3 (Übergangsschema):
+          // Die bestehende Landingpage-UI sendet weiterhin { identifier, type }.
+          // Die UI-Anpassung auf { email } erfolgt im separaten Landingpage-Projekt.
+          // Serverseitig wird Nicht-E-Mail-Input sauber abgelehnt (kein stilles Fehlverhalten).
+          identifier: z.string().min(1, "E-Mail-Adresse erforderlich"),
           password: z.string().min(1, "Passwort erforderlich"),
-          type: z.enum(["email", "customerNumber"]),
+          type: z.enum(["email", "customerNumber"]).optional(),
         })
       )
       .mutation(async ({ input, ctx }) => {
@@ -70,67 +79,117 @@ export const appRouter = router({
             success: false,
             accessStatus: null as string | null,
             message: RATE_LIMIT_MESSAGE,
+            dashboardUrl: null as string | null,
           };
         }
 
         try {
-          // Validate credentials against WooCommerce
-          const customer = await validateB2BCredentials(input.identifier, input.password, input.type);
-          
-          if (!customer) {
+          // ─────────────────────────────────────────────────────────────
+          // DELEGATE to kaffeegraf-b2b-api — single auth system
+          // The b2b-api handles: credential check, access gating, JWT
+          // issuance and sets the HttpOnly refresh_token cookie on
+          // domain=.kaffeegraf.coffee so it is shared across subdomains.
+          // ─────────────────────────────────────────────────────────────
+          // Login-Contract v3: Serverseitige E-Mail-Validierung
+          // Nur E-Mail-Login ist aktiv. Kundennummer-Input wird sauber abgelehnt.
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(input.identifier.trim())) {
             return {
               success: false,
               accessStatus: null as string | null,
-              message: "Kundennummer/E-Mail oder Passwort ungültig",
+              message: "Bitte geben Sie eine gültige E-Mail-Adresse ein. Login mit Kundennummer wird aktuell nicht unterstützt.",
+              dashboardUrl: null as string | null,
             };
           }
 
-          // ─────────────────────────────────────────────────────────────
-          // ACCESS GATING — B2B_STATUS_SPEC v2
-          // ONLY b2b_access_status is used for access control.
-          // b2b_status (business relationship) is NEVER used here.
-          // ─────────────────────────────────────────────────────────────
-          const fullCustomer = await getWooCommerceCustomerById(customer.id);
-          const accessStatus = fullCustomer?.meta_data?.find(
-            (m: { key: string; value: string }) => m.key === "b2b_access_status"
-          )?.value ?? "none";
-
-          // Status-specific denial messages (exact wording per spec)
-          const DENIAL_MESSAGES: Record<string, string> = {
-            none: "Für Ihr Konto ist derzeit noch kein B2B-Zugang freigeschaltet.\nWenn Sie einen Zugang benötigen, stellen Sie bitte eine Anfrage über das Formular.",
-            requested: "Ihre Anfrage ist bei uns eingegangen und wird derzeit geprüft.\nWir melden uns zeitnah persönlich bei Ihnen.",
-            approved: "Ihr Zugang wurde bereits freigegeben, ist aber noch nicht vollständig aktiviert.\nWir melden uns zeitnah persönlich bei Ihnen.",
-            rejected: "Ihr Zugang ist derzeit nicht freigeschaltet.\nBei Fragen melden wir uns gerne persönlich bei Ihnen.",
+          const loginPayload = {
+            email: input.identifier.trim().toLowerCase(),
+            password: input.password,
           };
 
-          if (accessStatus !== "active") {
-            const denialMessage = DENIAL_MESSAGES[accessStatus] ?? DENIAL_MESSAGES["none"];
-            console.log(`[B2B Login] Access denied for customer ${customer.id}: b2b_access_status=${accessStatus}`);
+          let apiResponse: any;
+          try {
+            apiResponse = await axios.post(
+              `${B2B_API_BASE}/api/b2b/login`,
+              loginPayload,
+              {
+                headers: { "Content-Type": "application/json" },
+                // Do NOT follow redirects; we need the raw response with Set-Cookie
+                maxRedirects: 0,
+                validateStatus: () => true, // handle all status codes manually
+              }
+            );
+          } catch (networkErr) {
+            console.error("[B2B Login] Network error calling b2b-api:", networkErr);
             return {
               success: false,
-              accessStatus,
-              message: denialMessage,
+              accessStatus: null as string | null,
+              message: "Verbindungsfehler. Bitte versuchen Sie es später erneut.",
+              dashboardUrl: null as string | null,
             };
           }
 
-          // Access granted — generate session token
-          const token = generateSessionToken(customer.id);
+          const status = apiResponse.status;
+          const data = apiResponse.data;
 
+          // ─── Forward Set-Cookie header from b2b-api to the browser ───
+          // The refresh_token cookie is HttpOnly, domain=.kaffeegraf.coffee,
+          // path=/ — it will be sent automatically on all subdomains.
+          const setCookieHeader = apiResponse.headers["set-cookie"];
+          if (setCookieHeader) {
+            const cookies = Array.isArray(setCookieHeader) ? setCookieHeader : [setCookieHeader];
+            cookies.forEach((cookie: string) => {
+              ctx.res.append("Set-Cookie", cookie);
+            });
+            console.log(`[B2B Login] Forwarded ${cookies.length} Set-Cookie header(s) to browser`);
+          }
+
+          // ─── Handle non-2xx from b2b-api ──────────────────────────────
+          if (status === 401) {
+            // Map b2b-api error codes to user-facing messages
+            const code = data?.error?.code ?? data?.code ?? "";
+            const DENIAL_MESSAGES: Record<string, string> = {
+              INVALID_CREDENTIALS: "Kundennummer/E-Mail oder Passwort ungültig",
+              ACCOUNT_NOT_ACTIVE: "Für Ihr Konto ist derzeit noch kein B2B-Zugang freigeschaltet.\nWenn Sie einen Zugang benötigen, stellen Sie bitte eine Anfrage über das Formular.",
+              DASHBOARD_ACCESS_DENIED: "Ihr Zugang ist derzeit nicht freigeschaltet.\nBei Fragen melden wir uns gerne persönlich bei Ihnen.",
+            };
+            return {
+              success: false,
+              accessStatus: null as string | null,
+              message: DENIAL_MESSAGES[code] ?? "Anmeldung fehlgeschlagen. Bitte prüfen Sie Ihre Zugangsdaten.",
+              dashboardUrl: null as string | null,
+            };
+          }
+
+          if (status !== 200) {
+            console.error(`[B2B Login] Unexpected status ${status} from b2b-api:`, data);
+            return {
+              success: false,
+              accessStatus: null as string | null,
+              message: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+              dashboardUrl: null as string | null,
+            };
+          }
+
+          // ─── Success ──────────────────────────────────────────────────
+          // Cookie is already set on the browser via the forwarded Set-Cookie header.
+          // Return dashboardUrl so the frontend can redirect.
+          console.log(`[B2B Login] Success for customer ${data.customerId ?? "unknown"}, redirecting to dashboard`);
           return {
             success: true,
             accessStatus: "active",
-            token,
-            customerId: customer.id,
-            customerNumber: customer.meta_data?.find((m: any) => m.key === "b2b_customer_number")?.value,
-            dashboardUrl: "https://kaffeebizdash-fqjhwufg.manus.space",
             message: "Erfolgreich angemeldet",
+            dashboardUrl: DASHBOARD_URL,
+            // Do NOT return token — no JWT in response body, no localStorage
           };
+
         } catch (error) {
-          console.error("B2B Login Error:", error);
+          console.error("[B2B Login] Unexpected error:", error);
           return {
             success: false,
             accessStatus: null as string | null,
             message: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+            dashboardUrl: null as string | null,
           };
         }
       }),
